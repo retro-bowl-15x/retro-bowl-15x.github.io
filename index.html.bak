@@ -16,13 +16,19 @@
       gtag("config", "G-EZM74395F2");
     </script>
 	
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6878762486915837"
+      crossorigin="anonymous"
+    ></script>
+	
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta
       name="description"
-      content="retro-bowl-15x.github.io is the ultimate gaming platform with 400+ G4M3S, unique features, and an engaging gaming experience. Discover, play, and connect with retro-bowl-15x.github.io."
+      content="quiz-50.github.io is the ultimate gaming platform with 400+ G4M3S, unique features, and an engaging gaming experience. Discover, play, and connect with quiz-50.github.io."
     />
-    <title class="cloak">Home | retro-bowl-15x.github.io</title>
+    <title class="cloak">Home | quiz-50.github.io</title>
     <link class="favicon" rel="icon" type="image/x-icon" href="/media/drive.ico" />
     <link href="style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="games.css" />
@@ -33,7 +39,7 @@
         <img src="media/bars-solid.svg" alt="Menu" class="shoot" />
       </div>
       <a href="/" class="logo2" style="background-color: transparent">
-        <img src="/media/logom.png" alt="retro-bowl-15x.github.io Logo" />
+        <img src="/media/logom.png" alt="quiz-50.github.io Logo" />
       </a>
       <a href="new.html" class="nav-link">New</a>
       <a href="trending.html" class="nav-link">Trending</a>
@@ -46,7 +52,7 @@
     </nav>
     <div class="wrap" id="wrap">
       <header class="homeheader">
-        <div class="title" name="Welcome to retro-bowl-15x.github.io!">Welcome to retro-bowl-15x.github.io</div>
+        <div class="title" name="Welcome to quiz-50.github.io!">Welcome to quiz-50.github.io</div>
         <div class="sub">
           <b
             style="
@@ -122,9 +128,9 @@
       </div>
     </div>
     <footer class="footer">
-      © 2024 <a href="/">retro-bowl-15x.github.io</a
+      © 2024 <a href="/">quiz-50.github.io</a
       ><span style="color: black; user-select: none; background-color: black"
-        >retro-bowl-15x.github.io</span
+        >quiz-50.github.io</span
       >
       All rights reserved<br />
       Have fun playing these unblocked fun G4M3S!🎮🎮🎮<br
@@ -163,7 +169,7 @@
         removeFavorites.addEventListener("click", () => {
           if (
             confirm(
-              "Are you sure you want to remove all your favorite G4M3S on retro-bowl-15x.github.io?"
+              "Are you sure you want to remove all your favorite G4M3S on quiz-50.github.io?"
             )
           ) {
             lists.style.display = "none";
