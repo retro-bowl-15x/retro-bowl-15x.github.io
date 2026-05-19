@@ -191,5 +191,45 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   //Above is code for setting the theme
   (adsbygoogle = window.adsbygoogle || []).push({});
+
+
+  // Custom Play Overlay + Video Ad
+  const iframeEl = document.getElementById("game-frame");
+  const overlay = document.getElementById("game-overlay");
+  const playButton = document.getElementById("play-button");
+
+  function startGameAfterAd() {
+    if (iframeEl.dataset.src && iframeEl.src !== iframeEl.dataset.src) {
+      iframeEl.src = iframeEl.dataset.src;
+    }
+    overlay.style.display = "none";
+  }
+
+  // Override AdinPlay callback
+  if (window.aiptag && window.aiptag.adplayer && window.aiptag.adplayer.aipConfig) {
+    window.aiptag.adplayer.aipConfig.AIP_COMPLETE = function () {
+      startGameAfterAd();
+    };
+  }
+
+  playButton.addEventListener("click", function () {
+    if (typeof show_videoad === "function") {
+      try {
+        show_videoad();
+
+        // fallback if adblocker
+        setTimeout(() => {
+          startGameAfterAd();
+        }, 2500);
+
+      } catch (e) {
+        startGameAfterAd();
+      }
+    } else {
+      startGameAfterAd();
+    }
+  });
+
+
   //Above is code for Google Ads
 });
