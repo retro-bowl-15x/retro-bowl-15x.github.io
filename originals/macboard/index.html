@@ -22,7 +22,27 @@
     <link rel="stylesheet" href="/macvg/style.css" />
     <link rel="stylesheet" href="style.css" />
     <script src="apps.js"></script>
-  </head>
+  
+<style>
+#game-overlay .overlay-inner{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+#overlay-970-ad{
+width:970px;
+height:250px;
+margin-top:20px;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+</style>
+
+</head>
   <body>
     <nav class="nav" id="nav">
       <div class="overflowm shoot" id="overflowm">
@@ -85,6 +105,11 @@
       </div>
       <div class="btns">
         <button class="btn" onclick="playAll()">Play All 😈</button>
+
+<div id="overlay-970-ad">
+<!-- 970x250 AD CODE -->
+</div>
+
         <button class="btn" onclick="stopAll()" id="stopall">
           Stop All 😇
         </button>
