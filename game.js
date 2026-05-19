@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => console.error("Error fetching data:", error));
   //Above is code for download button
   const gameFrame = document.getElementById("gameframe");
-  const gameIFrame = gameFrame.children[0].contentWindow;
+  const gameIFrame = document.getElementById("game-frame").contentWindow;
   const fullScreen = document.getElementById("fullscreen");
   let isGameActive = true;
   fullScreen.addEventListener("click", function () {

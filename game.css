@@ -578,121 +578,93 @@ hr {
 }
 
 
-/* Play Overlay */
-.actual{
-  position: relative;
-}
-
-#game-overlay{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#000;
-  z-index:999;
-}
-
-#play-button{
-  background:#ff9800;
-  color:#fff;
-  border:none;
-  padding:18px 40px;
-  font-size:28px;
-  font-weight:700;
-  border-radius:14px;
-  cursor:pointer;
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
-  transition:all .2s ease;
-}
-
-#play-button:hover{
-  transform:scale(1.08);
-}
-
-#videoad{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
 
 
-/* Make the play screen fully black while the game loads behind it */
-#game-overlay{
+
+
+/* Stable Play Overlay: only covers iframe area */
+#game-player-shell{
+  position:relative !important;
+  width:100% !important;
+  height:40vw !important;
+  min-height:40vw !important;
+  overflow:hidden !important;
+  border-radius:10px 10px 0 0 !important;
   background:#000 !important;
-  z-index:999 !important;
 }
 
+#game-player-shell #game-frame{
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  display:block !important;
+  position:relative !important;
+  z-index:1 !important;
+  border-radius:10px 10px 0 0 !important;
+}
 
-/* V4 robust black play screen */
-.actual#gameframe{
-  position: relative !important;
-  overflow: hidden;
-}
-#game-frame{
-  position: relative;
-  z-index: 1;
-}
 #game-overlay{
-  position: absolute !important;
-  left: 0 !important;
-  top: 0 !important;
-  right: 0 !important;
-  height: 40vw !important;
-  min-height: 40vw !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #000 !important;
-  z-index: 2147483646 !important;
-  pointer-events: auto !important;
-  cursor: pointer;
-}
-#play-button{
-  pointer-events: auto !important;
-  position: relative !important;
-  z-index: 2147483647 !important;
-  cursor: pointer !important;
-  user-select: none;
-}
-#play-button:disabled{
-  opacity: .85;
-  cursor: wait !important;
-}
-.actual:fullscreen #game-overlay{
-  height: calc(100vh - 44px) !important;
-  min-height: calc(100vh - 44px) !important;
-}
-
-
-/* Clean 970x250 ad area under centered Play button */
-#game-overlay{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:50 !important;
+  background:#000 !important;
   display:flex !important;
   flex-direction:column !important;
   align-items:center !important;
   justify-content:center !important;
   gap:20px !important;
-  background:#000 !important;
+  pointer-events:auto !important;
 }
 
 #play-button{
+  background:#ff9800 !important;
+  color:#fff !important;
+  border:none !important;
+  padding:18px 40px !important;
+  font-size:28px !important;
+  font-weight:700 !important;
+  border-radius:14px !important;
+  cursor:pointer !important;
+  box-shadow:0 0 20px rgba(0,0,0,0.4) !important;
   margin:0 auto !important;
   display:block !important;
-  flex:0 0 auto !important;
+  position:relative !important;
+  z-index:52 !important;
+  pointer-events:auto !important;
+}
+
+#play-button:hover{
+  transform:scale(1.06) !important;
 }
 
 #overlay-970-ad{
   width:970px !important;
   height:250px !important;
-  max-width:calc(100vw - 40px) !important;
+  max-width:calc(100% - 40px) !important;
   margin:0 auto !important;
   display:flex !important;
   align-items:center !important;
   justify-content:center !important;
   overflow:hidden !important;
   background:transparent !important;
-  flex:0 0 auto !important;
+  position:relative !important;
+  z-index:51 !important;
+}
+
+.actual:fullscreen #game-player-shell{
+  width:100vw !important;
+  height:calc(100vh - 44px) !important;
+  min-height:calc(100vh - 44px) !important;
+}
+
+.actual:fullscreen iframe{
+  width:100% !important;
+  height:100% !important;
+}
+
+/* Header/menu must stay clickable */
+nav, .nav-link, header, .navbar, .topnav{
+  position:relative !important;
+  z-index:1000 !important;
+  pointer-events:auto !important;
 }
