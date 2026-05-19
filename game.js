@@ -198,64 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
     root.style.setProperty("--bar-color", "rgb(70, 70, 70)");
   }
   //Above is code for setting the theme
-  (adsbygoogle = window.adsbygoogle || []).push({});
-
-
-  // Custom Play Overlay + Video Ad
-  const iframeEl = document.getElementById("game-frame");
-  const overlay = document.getElementById("game-overlay");
-  const playButton = document.getElementById("play-button");
-  let gameStarted = false;
-
-  window.startGameAfterAd = function () {
-    if (!iframeEl || !overlay) return;
-
-    // The game iframe is already loading in the background.
-    // After the video ad finishes, just remove the black play screen.
-    const realSrc = iframeEl.dataset.src || iframeEl.getAttribute("data-src");
-    if (!iframeEl.src && realSrc) iframeEl.src = realSrc;
-
-    gameStarted = true;
-    overlay.style.display = "none";
-    overlay.classList.add("hidden");
-  };
-
-  function hookAdComplete() {
-    if (window.aiptag && aiptag.adplayer && aiptag.adplayer.aipConfig) {
-      aiptag.adplayer.aipConfig.AIP_COMPLETE = function () {
-        window.startGameAfterAd();
-      };
-      return true;
-    }
-    return false;
-  }
-
-  hookAdComplete();
-  setTimeout(hookAdComplete, 1000);
-  setTimeout(hookAdComplete, 2500);
-
-  if (playButton) {
-    playButton.addEventListener("click", function () {
-      playButton.disabled = true;
-      playButton.innerHTML = "LOADING...";
-      hookAdComplete();
-
-      if (typeof window.show_videoad === "function") {
-        try {
-          window.show_videoad();
-          // Fallback: if the ad is blocked or callback does not fire, do not leave the user stuck.
-          setTimeout(function () {
-            if (!gameStarted) window.startGameAfterAd();
-          }, 3500);
-        } catch (e) {
-          window.startGameAfterAd();
-        }
-      } else {
-        window.startGameAfterAd();
-      }
-    });
-  }
-
-
+  try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
   //Above is code for Google Ads
 });
