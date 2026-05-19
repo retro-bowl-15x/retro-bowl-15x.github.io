@@ -105,14 +105,7 @@ overflow:hidden;
 
 <div id="game-overlay">
   <button type="button" id="play-button">▶ PLAY GAME</button>
-<div id="overlay-970-ad">
-<center>
-       	<div id='agario-cafe_970x250'>
-		<script type='text/javascript'>
-			aiptag.cmd.display.push(function() { aipDisplayTag.display('agario-cafe_970x250'); });
-		</script></center>
-
-</div>
+<div id="overlay-970-ad"><!-- 970x250 AD CODE --></div>
 </div>
 
           <div class="tool-bar">
