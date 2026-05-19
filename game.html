@@ -68,20 +68,7 @@
         <div class="loader"></div>
     </div>
 
-  
-<style>
-#overlay-970-ad{
-width:970px;
-height:250px;
-margin-top:25px;
-display:flex;
-align-items:center;
-justify-content:center;
-overflow:hidden;
-}
-</style>
-
-</head>
+  </head>
   <body>
       <nav class="nav" id="nav">
 
@@ -105,14 +92,13 @@ overflow:hidden;
 
 <div id="game-overlay">
   <button type="button" id="play-button">▶ PLAY GAME</button>
-<div id="overlay-970-ad">
-       	<div id='agario-cafe_970x250'>
+  <div id="overlay-970-ad"><center>
+         	<div id='agario-cafe_970x250'>
 		<script type='text/javascript'>
 			aiptag.cmd.display.push(function() { aipDisplayTag.display('agario-cafe_970x250'); });
-		</script></center><br>
+		</script></center>
 	</div>
-
-<!-- 970x250 AD CODE --></div>
+  </div>
 </div>
 
           <div class="tool-bar">
@@ -304,7 +290,7 @@ overflow:hidden;
       e.stopImmediatePropagation && e.stopImmediatePropagation();
 
       playBtn.disabled = true;
-      playBtn.textContent = "AD LOADING...";
+      playBtn.textContent = "▶ PLAY GAME";
       hookAdCallbacks();
 
       if (typeof window.show_videoad === "function") {

@@ -666,3 +666,33 @@ hr {
   height: calc(100vh - 44px) !important;
   min-height: calc(100vh - 44px) !important;
 }
+
+
+/* Clean 970x250 ad area under centered Play button */
+#game-overlay{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:20px !important;
+  background:#000 !important;
+}
+
+#play-button{
+  margin:0 auto !important;
+  display:block !important;
+  flex:0 0 auto !important;
+}
+
+#overlay-970-ad{
+  width:970px !important;
+  height:250px !important;
+  max-width:calc(100vw - 40px) !important;
+  margin:0 auto !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:hidden !important;
+  background:transparent !important;
+  flex:0 0 auto !important;
+}
