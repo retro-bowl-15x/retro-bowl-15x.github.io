@@ -40,24 +40,45 @@
 			AD_WIDTH: 960,
 			AD_HEIGHT: 540,
 			AD_DISPLAY: 'center', //default, fullscreen, fill, center, modal-center
-			LOADING_TEXT: '</div>
+			LOADING_TEXT: 'loading advertisement',
+			PREROLL_ELEM: function(){return document.getElementById('videoad')},
+			AIP_COMPLETE: function (state)  {
+				// lesson_detail();
+			}
+		});
+
+			});
+
+		function show_videoad() {
+            // check if the adslib is loaded correctly or blocked by adblockers etc.
+            if (window.aiptag && typeof aiptag.adplayer !== 'undefined') {
+                aiptag.cmd.player.push(function() { aiptag.adplayer.startVideoAd(); });
+            } else {
+                // Adlib did not load; continue to content instead of breaking the play button.
+                if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
+            }
+        }
+            </script>
+	<script async src="//api.adinplay.com/libs/aiptag/pub/MNS/agario.cafe/tag.min.js"></script>
+
+
+
+
+    <div id="preloader">
+        <div class="loader"></div>
     </div>
 
   
 <style>
-
-</style>
-
-
-<style>
-#game-overlay .overlay-inner{
+#overlay-970-ad{
+width:970px;
+height:250px;
+margin-top:25px;
 display:flex;
-flex-direction:column;
 align-items:center;
 justify-content:center;
+overflow:hidden;
 }
-
-
 </style>
 
 </head>
@@ -84,11 +105,7 @@ justify-content:center;
 
 <div id="game-overlay">
   <button type="button" id="play-button">▶ PLAY GAME</button>
-
-<div id="overlay-970-ad" style="width:970px;height:250px;margin:20px auto 0 auto;display:flex;align-items:center;justify-content:center;">
-<!-- 970x250 AD -->
-</div>
-
+<div id="overlay-970-ad"><!-- 970x250 AD CODE --></div>
 </div>
 
           <div class="tool-bar">
