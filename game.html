@@ -43,22 +43,29 @@
 			LOADING_TEXT: 'loading advertisement',
 			PREROLL_ELEM: function(){return document.getElementById('videoad')},
 			AIP_COMPLETE: function (state)  {
-				// lesson_detail();
-			}
-		});
+					if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
+				},
+				AIP_REMOVE: function () {
+					if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
+				},
+				AIP_REWARDEDGRANTED: function () {
+					if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
+				}
+			});
 
 			});
 
 		function show_videoad() {
-            // check if the adslib is loaded correctly or blocked by adblockers etc.
-            if (window.aiptag && typeof aiptag.adplayer !== 'undefined') {
-                aiptag.cmd.player.push(function() { aiptag.adplayer.startVideoAd(); });
-            } else {
-                // Adlib did not load; continue to content instead of breaking the play button.
-                if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
-            }
-        }
-            </script>
+	            if (window.aiptag && typeof aiptag.adplayer !== 'undefined') {
+	                aiptag.cmd.player.push(function() {
+						try { aiptag.adplayer.startVideoAd(); }
+						catch(e){ if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd(); }
+					});
+	            } else {
+	                if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
+	            }
+	        }
+	            </script>
 	<script async src="//api.adinplay.com/libs/aiptag/pub/MNS/agario.cafe/tag.min.js"></script>
 
 
@@ -252,6 +259,12 @@
     function openGame() {
       if (started) return;
       started = true;
+      var adBox = document.getElementById("videoad");
+      if (adBox) {
+        adBox.classList.remove("ad-active");
+        adBox.style.display = "none";
+        adBox.innerHTML = "";
+      }
       overlay.style.display = "none";
       overlay.style.pointerEvents = "none";
       iframe.style.pointerEvents = "auto";
@@ -270,6 +283,7 @@
           window.aiptag.adplayer.aipConfig.AIP_COMPLETE = openGame;
           window.aiptag.adplayer.aipConfig.AIP_REMOVE = openGame;
           window.aiptag.adplayer.aipConfig.AIP_REWARDEDGRANTED = openGame;
+          window.aiptag.adplayer.aipConfig.AIP_ERROR = openGame;
           return true;
         }
       } catch (e) {}
@@ -289,6 +303,8 @@
       playBtn.disabled = true;
       playBtn.textContent = "▶ PLAY GAME";
       hookAdCallbacks();
+      var adBox = document.getElementById("videoad");
+      if (adBox) adBox.classList.add("ad-active");
 
       if (typeof window.show_videoad === "function") {
         try {
@@ -296,7 +312,7 @@
           // Reklam callback vermezse kullanıcı siyah ekranda kalmasın.
           setTimeout(function () {
             if (!started) openGame();
-          }, 4500);
+          }, 15000);
         } catch (err) {
           openGame();
         }
