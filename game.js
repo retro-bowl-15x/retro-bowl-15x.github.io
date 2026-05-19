@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //Above is code for reporting the game
   const star = document.getElementById("star");
   let existingData = localStorage.getItem("favorites");
-  let favoritesArray = existingData.split(",");
+  let favoritesArray = existingData ? existingData.split(",") : [];
   if (favoritesArray.includes(gameID)) {
     star.src = "/media/star-solid.svg";
   }
@@ -91,13 +91,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   //Above is code for adding the game to recents
   const sideSearch = document.getElementById("sideSearch");
-  const sideSearchForm = sideSearch.parentElement;
+  const sideSearchForm = sideSearch ? sideSearch.parentElement : null;
   const nothing = document.getElementById("nothing");
-  nothing.style.paddingTop = "0px";
-  nothing.style.display = "none";
-  sideSearch.addEventListener('focus', () => isGameActive = false);
-  sideSearch.addEventListener('blur', () => isGameActive = true);
-  sideSearchForm.addEventListener("submit", (e) => {
+  if (nothing) {
+    nothing.style.paddingTop = "0px";
+    nothing.style.display = "none";
+  }
+  if (sideSearch) {
+    sideSearch.addEventListener('focus', () => isGameActive = false);
+    sideSearch.addEventListener('blur', () => isGameActive = true);
+  }
+  if (sideSearch && sideSearchForm) sideSearchForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const list = document.getElementById("list");
     let searchTerm = sideSearch.value.toLowerCase();
@@ -123,13 +127,17 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     if (results.length < 1) {
-      nothing.style.display = "block";
-      nothing.style.paddingTop = "20px";
-      nothing.children[0].style.display = "inline";
+      if (nothing) {
+        nothing.style.display = "block";
+        nothing.style.paddingTop = "20px";
+        if (nothing.children[0]) nothing.children[0].style.display = "inline";
+      }
     } else {
-      nothing.style.paddingTop = "0px";
-      nothing.style.display = "none";
-      list.style.display = "flex";
+      if (nothing) {
+        nothing.style.paddingTop = "0px";
+        nothing.style.display = "none";
+      }
+      if (list) list.style.display = "flex";
     }
   });
   //Above is code for sidebar search
@@ -197,38 +205,56 @@ document.addEventListener("DOMContentLoaded", () => {
   const iframeEl = document.getElementById("game-frame");
   const overlay = document.getElementById("game-overlay");
   const playButton = document.getElementById("play-button");
+  let gameStarted = false;
 
-  function startGameAfterAd() {
-    if (iframeEl.dataset.src && iframeEl.src !== iframeEl.dataset.src) {
-      iframeEl.src = iframeEl.dataset.src;
-    }
+  window.startGameAfterAd = function () {
+    if (!iframeEl || !overlay) return;
+
+    // The game iframe is already loading in the background.
+    // After the video ad finishes, just remove the black play screen.
+    const realSrc = iframeEl.dataset.src || iframeEl.getAttribute("data-src");
+    if (!iframeEl.src && realSrc) iframeEl.src = realSrc;
+
+    gameStarted = true;
     overlay.style.display = "none";
-  }
+    overlay.classList.add("hidden");
+  };
 
-  // Override AdinPlay callback
-  if (window.aiptag && window.aiptag.adplayer && window.aiptag.adplayer.aipConfig) {
-    window.aiptag.adplayer.aipConfig.AIP_COMPLETE = function () {
-      startGameAfterAd();
-    };
-  }
-
-  playButton.addEventListener("click", function () {
-    if (typeof show_videoad === "function") {
-      try {
-        show_videoad();
-
-        // fallback if adblocker
-        setTimeout(() => {
-          startGameAfterAd();
-        }, 2500);
-
-      } catch (e) {
-        startGameAfterAd();
-      }
-    } else {
-      startGameAfterAd();
+  function hookAdComplete() {
+    if (window.aiptag && aiptag.adplayer && aiptag.adplayer.aipConfig) {
+      aiptag.adplayer.aipConfig.AIP_COMPLETE = function () {
+        window.startGameAfterAd();
+      };
+      return true;
     }
-  });
+    return false;
+  }
+
+  hookAdComplete();
+  setTimeout(hookAdComplete, 1000);
+  setTimeout(hookAdComplete, 2500);
+
+  if (playButton) {
+    playButton.addEventListener("click", function () {
+      playButton.disabled = true;
+      playButton.innerHTML = "LOADING...";
+      hookAdComplete();
+
+      if (typeof window.show_videoad === "function") {
+        try {
+          window.show_videoad();
+          // Fallback: if the ad is blocked or callback does not fire, do not leave the user stuck.
+          setTimeout(function () {
+            if (!gameStarted) window.startGameAfterAd();
+          }, 3500);
+        } catch (e) {
+          window.startGameAfterAd();
+        }
+      } else {
+        window.startGameAfterAd();
+      }
+    });
+  }
 
 
   //Above is code for Google Ads

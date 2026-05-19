@@ -589,8 +589,8 @@ hr {
   display:flex;
   align-items:center;
   justify-content:center;
-  background:rgba(0,0,0,0.65);
-  z-index:99;
+  background:#000;
+  z-index:999;
 }
 
 #play-button{
@@ -617,4 +617,11 @@ hr {
   display:flex;
   align-items:center;
   justify-content:center;
+}
+
+
+/* Make the play screen fully black while the game loads behind it */
+#game-overlay{
+  background:#000 !important;
+  z-index:999 !important;
 }
