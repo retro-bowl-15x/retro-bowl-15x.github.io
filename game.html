@@ -43,8 +43,8 @@
 			LOADING_TEXT: 'loading advertisement',
 			PREROLL_ELEM: function(){return document.getElementById('videoad')},
 			AIP_COMPLETE: function (state)  {
-                if (typeof window.__finishGameAd === "function") {
-                    window.__finishGameAd();
+                if (typeof window.__openGameAfterAd === "function") {
+                    window.__openGameAfterAd();
                 }
             }
 		});
@@ -53,12 +53,12 @@
 
 		function show_videoad() {
         if (window.aiptag && aiptag.adplayer && typeof aiptag.adplayer.startVideoAd === 'function') {
-            aiptag.cmd.player.push(function() { 
-                aiptag.adplayer.startVideoAd(); 
+            aiptag.cmd.player.push(function() {
+                aiptag.adplayer.startVideoAd();
             });
         } else {
-            if (typeof window.__finishGameAd === "function") {
-                window.__finishGameAd();
+            if (typeof window.__openGameAfterAd === "function") {
+                window.__openGameAfterAd();
             }
         }
     }
@@ -92,15 +92,14 @@
     <div class="game-container">
       <div class="game-related">
         <div class="actual" id="gameframe">
-          <div id="game-player-shell">
-            <iframe src="" frameborder="0" id="game-frame"></iframe>
-            <div id="game-overlay">
-              <button type="button" id="play-button">▶ PLAY GAME</button>
-              <div id="overlay-970-ad">
-                <!-- 970x250 REKLAM KODUNU BURAYA EKLE -->
-              </div>
+          <div id="game-start-screen">
+            <img id="game-start-image" src="" alt="Game Preview" />
+            <div id="start-970-ad">
+              <!-- 970x250 REKLAM KODUNU BURAYA EKLE -->
             </div>
+            <button type="button" id="start-play-button">PLAY</button>
           </div>
+          <iframe src="" frameborder="0" id="game-frame" data-src="" style="display:none;"></iframe>
           <div class="tool-bar">
             <div class="more-left">
               <img src="" id="game-thumb" />
@@ -169,7 +168,10 @@
           }
           newArray.forEach((game) => {
             if (game.id === parseInt(targetUrl)) {
-              document.getElementById("game-frame").src = game.link;
+              const gameFrameEl = document.getElementById("game-frame");
+              const gameStartImg = document.getElementById("game-start-image");
+              gameFrameEl.dataset.src = game.link;
+              if (gameStartImg) gameStartImg.src = game.link + game.thumb;
               const titleFromStorage = localStorage.getItem("title");
               if (titleFromStorage && titleFromStorage.trim() !== "") {
                 const pageTitle = document.getElementsByTagName("title")[0];
@@ -227,41 +229,46 @@
     </script>
 
     <script>
-      window.__finishGameAd = function () {
-        var overlay = document.getElementById("game-overlay");
+      window.__openGameAfterAd = function () {
+        var frame = document.getElementById("game-frame");
+        var startScreen = document.getElementById("game-start-screen");
         var videoad = document.getElementById("videoad");
-        if (overlay) overlay.style.display = "none";
+
         if (videoad) {
           videoad.innerHTML = "";
           videoad.style.display = "none";
         }
+
+        if (frame) {
+          if (!frame.src || frame.src === window.location.href || frame.src === "about:blank") {
+            frame.src = frame.dataset.src || frame.getAttribute("data-src") || "";
+          }
+          frame.style.display = "block";
+        }
+
+        if (startScreen) {
+          startScreen.style.display = "none";
+        }
       };
 
       document.addEventListener("DOMContentLoaded", function () {
-        var playBtn = document.getElementById("play-button");
-        var overlay = document.getElementById("game-overlay");
-        var adBox = document.getElementById("overlay-970-ad");
+        var playBtn = document.getElementById("start-play-button");
+        if (!playBtn) return;
 
-        if (playBtn) {
-          playBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+        playBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
 
-            if (adBox) {
-              adBox.innerHTML = adBox.innerHTML;
+          try {
+            if (typeof show_videoad === "function") {
+              show_videoad();
+            } else {
+              window.__openGameAfterAd();
             }
-
-            try {
-              if (typeof show_videoad === "function") {
-                show_videoad();
-              } else {
-                window.__finishGameAd();
-              }
-            } catch (err) {
-              window.__finishGameAd();
-            }
-          });
-        }
+          } catch (err) {
+            window.__openGameAfterAd();
+          }
+        });
       });
     </script>
 
