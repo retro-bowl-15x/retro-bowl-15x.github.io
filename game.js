@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   //Above is code for reporting the game
   const star = document.getElementById("star");
   let existingData = localStorage.getItem("favorites");
-  let favoritesArray = existingData ? existingData.split(",") : [];
+  let favoritesArray = existingData.split(",");
   if (favoritesArray.includes(gameID)) {
     star.src = "/media/star-solid.svg";
   }
@@ -91,55 +91,48 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   //Above is code for adding the game to recents
   const sideSearch = document.getElementById("sideSearch");
-  const sideSearchForm = sideSearch ? sideSearch.parentElement : null;
   const nothing = document.getElementById("nothing");
-  if (nothing) {
+  if (sideSearch && sideSearch.parentElement && nothing) {
+    const sideSearchForm = sideSearch.parentElement;
     nothing.style.paddingTop = "0px";
     nothing.style.display = "none";
-  }
-  if (sideSearch) {
     sideSearch.addEventListener('focus', () => isGameActive = false);
     sideSearch.addEventListener('blur', () => isGameActive = true);
-  }
-  if (sideSearch && sideSearchForm) sideSearchForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const list = document.getElementById("list");
-    let searchTerm = sideSearch.value.toLowerCase();
-    let results = [];
-    list.innerHTML = "";
-    for (var i = 0; i < newArray.length; i++) {
-      let item = newArray[i].name;
-      var itemText = item.toLowerCase();
-      if (itemText.includes(searchTerm)) {
-        let newGameElement = document.createElement("div");
-        newGameElement.classList.add("side-game");
-        newGameElement.innerHTML = item;
-        list.appendChild(newGameElement);
-        results.push(item);
-        let newGameID = newArray[i].id;
-        newGameElement.style.backgroundImage = `url(${
-          newArray[i].link + newArray[i].thumb
-        })`;
-        newGameElement.addEventListener("click", () => {
-          const params = new URLSearchParams({ target: newGameID });
-          window.location.href = `game.html?${params.toString()}`;
-        });
+    sideSearchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const list = document.getElementById("list");
+      if (!list) return;
+      let searchTerm = sideSearch.value.toLowerCase();
+      let results = [];
+      list.innerHTML = "";
+      for (var i = 0; i < newArray.length; i++) {
+        let item = newArray[i].name;
+        var itemText = item.toLowerCase();
+        if (itemText.includes(searchTerm)) {
+          let newGameElement = document.createElement("div");
+          newGameElement.classList.add("side-game");
+          newGameElement.innerHTML = item;
+          list.appendChild(newGameElement);
+          results.push(item);
+          let newGameID = newArray[i].id;
+          newGameElement.style.backgroundImage = `url(${newArray[i].link + newArray[i].thumb})`;
+          newGameElement.addEventListener("click", () => {
+            const params = new URLSearchParams({ target: newGameID });
+            window.location.href = `game.html?${params.toString()}`;
+          });
+        }
       }
-    }
-    if (results.length < 1) {
-      if (nothing) {
+      if (results.length < 1) {
         nothing.style.display = "block";
         nothing.style.paddingTop = "20px";
         if (nothing.children[0]) nothing.children[0].style.display = "inline";
-      }
-    } else {
-      if (nothing) {
+      } else {
         nothing.style.paddingTop = "0px";
         nothing.style.display = "none";
+        list.style.display = "flex";
       }
-      if (list) list.style.display = "flex";
-    }
-  });
+    });
+  }
   //Above is code for sidebar search
   let theme = localStorage.getItem("theme");
   if (theme === "light") {
@@ -198,6 +191,6 @@ document.addEventListener("DOMContentLoaded", () => {
     root.style.setProperty("--bar-color", "rgb(70, 70, 70)");
   }
   //Above is code for setting the theme
-  try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+  (adsbygoogle = window.adsbygoogle || []).push({});
   //Above is code for Google Ads
 });

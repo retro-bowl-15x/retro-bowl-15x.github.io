@@ -43,29 +43,26 @@
 			LOADING_TEXT: 'loading advertisement',
 			PREROLL_ELEM: function(){return document.getElementById('videoad')},
 			AIP_COMPLETE: function (state)  {
-					if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
-				},
-				AIP_REMOVE: function () {
-					if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
-				},
-				AIP_REWARDEDGRANTED: function () {
-					if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
-				}
-			});
+                if (typeof window.__finishGameAd === "function") {
+                    window.__finishGameAd();
+                }
+            }
+		});
 
 			});
 
 		function show_videoad() {
-	            if (window.aiptag && typeof aiptag.adplayer !== 'undefined') {
-	                aiptag.cmd.player.push(function() {
-						try { aiptag.adplayer.startVideoAd(); }
-						catch(e){ if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd(); }
-					});
-	            } else {
-	                if (typeof window.startGameAfterAd === 'function') window.startGameAfterAd();
-	            }
-	        }
-	            </script>
+        if (window.aiptag && aiptag.adplayer && typeof aiptag.adplayer.startVideoAd === 'function') {
+            aiptag.cmd.player.push(function() { 
+                aiptag.adplayer.startVideoAd(); 
+            });
+        } else {
+            if (typeof window.__finishGameAd === "function") {
+                window.__finishGameAd();
+            }
+        }
+    }
+        </script>
 	<script async src="//api.adinplay.com/libs/aiptag/pub/MNS/agario.cafe/tag.min.js"></script>
 
 
@@ -96,7 +93,7 @@
       <div class="game-related">
         <div class="actual" id="gameframe">
           <div id="game-player-shell">
-            <iframe src="" frameborder="0" id="game-frame" data-src=""></iframe>
+            <iframe src="" frameborder="0" id="game-frame"></iframe>
             <div id="game-overlay">
               <button type="button" id="play-button">▶ PLAY GAME</button>
               <div id="overlay-970-ad">
@@ -104,8 +101,7 @@
               </div>
             </div>
           </div>
-
-<div class="tool-bar">
+          <div class="tool-bar">
             <div class="more-left">
               <img src="" id="game-thumb" />
             </div>
@@ -174,7 +170,6 @@
           newArray.forEach((game) => {
             if (game.id === parseInt(targetUrl)) {
               document.getElementById("game-frame").src = game.link;
-              document.getElementById("game-frame").dataset.src = game.link;
               const titleFromStorage = localStorage.getItem("title");
               if (titleFromStorage && titleFromStorage.trim() !== "") {
                 const pageTitle = document.getElementsByTagName("title")[0];
@@ -230,104 +225,46 @@
         })
         .catch((error) => console.error("Error fetching data:", error));
     </script>
+
+    <script>
+      window.__finishGameAd = function () {
+        var overlay = document.getElementById("game-overlay");
+        var videoad = document.getElementById("videoad");
+        if (overlay) overlay.style.display = "none";
+        if (videoad) {
+          videoad.innerHTML = "";
+          videoad.style.display = "none";
+        }
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var playBtn = document.getElementById("play-button");
+        var overlay = document.getElementById("game-overlay");
+        var adBox = document.getElementById("overlay-970-ad");
+
+        if (playBtn) {
+          playBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (adBox) {
+              adBox.innerHTML = adBox.innerHTML;
+            }
+
+            try {
+              if (typeof show_videoad === "function") {
+                show_videoad();
+              } else {
+                window.__finishGameAd();
+              }
+            } catch (err) {
+              window.__finishGameAd();
+            }
+          });
+        }
+      });
+    </script>
+
     <script src="game.js"></script>
-  
-<script id="play-overlay-controller">
-(function () {
-  function ready(fn) {
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", fn);
-    } else {
-      fn();
-    }
-  }
-
-  ready(function () {
-    var iframe = document.getElementById("game-frame");
-    var overlay = document.getElementById("game-overlay");
-    var playBtn = document.getElementById("play-button");
-    var started = false;
-
-    if (!iframe || !overlay || !playBtn) return;
-
-    // Oyun arkada yüklenir; siyah ekran tıklamayı yakalar.
-    overlay.style.display = "flex";
-    overlay.style.pointerEvents = "auto";
-    overlay.style.zIndex = "2147483646";
-    iframe.style.pointerEvents = "none";
-
-    function openGame() {
-      if (started) return;
-      started = true;
-      var adBox = document.getElementById("videoad");
-      if (adBox) {
-        adBox.classList.remove("ad-active");
-        adBox.style.display = "none";
-        adBox.innerHTML = "";
-      }
-      overlay.style.display = "none";
-      overlay.style.pointerEvents = "none";
-      iframe.style.pointerEvents = "auto";
-      playBtn.disabled = false;
-      playBtn.textContent = "▶ PLAY GAME";
-
-      // Famobi/HTML5Games ses için kullanıcı tıklamasından sonra iframe'e focus ver.
-      try { iframe.focus(); } catch (e) {}
-    }
-
-    window.startGameAfterAd = openGame;
-
-    function hookAdCallbacks() {
-      try {
-        if (window.aiptag && window.aiptag.adplayer && window.aiptag.adplayer.aipConfig) {
-          window.aiptag.adplayer.aipConfig.AIP_COMPLETE = openGame;
-          window.aiptag.adplayer.aipConfig.AIP_REMOVE = openGame;
-          window.aiptag.adplayer.aipConfig.AIP_REWARDEDGRANTED = openGame;
-          window.aiptag.adplayer.aipConfig.AIP_ERROR = openGame;
-          return true;
-        }
-      } catch (e) {}
-      return false;
-    }
-
-    hookAdCallbacks();
-    setTimeout(hookAdCallbacks, 500);
-    setTimeout(hookAdCallbacks, 1500);
-    setTimeout(hookAdCallbacks, 3000);
-
-    function playClick(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation && e.stopImmediatePropagation();
-
-      playBtn.disabled = true;
-      playBtn.textContent = "▶ PLAY GAME";
-      hookAdCallbacks();
-      var adBox = document.getElementById("videoad");
-      if (adBox) adBox.classList.add("ad-active");
-
-      if (typeof window.show_videoad === "function") {
-        try {
-          window.show_videoad();
-          // Reklam callback vermezse kullanıcı siyah ekranda kalmasın.
-          setTimeout(function () {
-            if (!started) openGame();
-          }, 15000);
-        } catch (err) {
-          openGame();
-        }
-      } else {
-        openGame();
-      }
-    }
-
-    playBtn.addEventListener("click", playClick, true);
-    overlay.addEventListener("click", function (e) {
-      if (e.target === overlay) playClick(e);
-    }, true);
-  });
-})();
-</script>
-
-</body>
+  </body>
 </html>

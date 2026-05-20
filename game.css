@@ -578,16 +578,14 @@ hr {
 }
 
 
-
-
-
-
-/* Stable Play Overlay: only covers iframe area */
+/* Clean Play Overlay - iframe only */
 #game-player-shell{
   position:relative !important;
   width:100% !important;
   height:40vw !important;
   min-height:40vw !important;
+  margin:0 !important;
+  padding:0 !important;
   overflow:hidden !important;
   border-radius:10px 10px 0 0 !important;
   background:#000 !important;
@@ -598,9 +596,12 @@ hr {
   height:100% !important;
   min-height:0 !important;
   display:block !important;
+  margin:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:10px 10px 0 0 !important;
   position:relative !important;
   z-index:1 !important;
-  border-radius:10px 10px 0 0 !important;
 }
 
 #game-overlay{
@@ -620,12 +621,13 @@ hr {
   background:#ff9800 !important;
   color:#fff !important;
   border:none !important;
-  padding:18px 40px !important;
+  padding:18px 42px !important;
   font-size:28px !important;
   font-weight:700 !important;
+  line-height:1 !important;
   border-radius:14px !important;
   cursor:pointer !important;
-  box-shadow:0 0 20px rgba(0,0,0,0.4) !important;
+  box-shadow:0 0 20px rgba(0,0,0,0.45) !important;
   margin:0 auto !important;
   display:block !important;
   position:relative !important;
@@ -657,25 +659,14 @@ hr {
   min-height:calc(100vh - 44px) !important;
 }
 
-.actual:fullscreen iframe{
+.actual:fullscreen #game-frame{
   width:100% !important;
   height:100% !important;
 }
 
-/* Header/menu must stay clickable */
-nav, .nav-link, header, .navbar, .topnav{
+/* Keep top menu clickable */
+.nav, #nav, nav, header, .nav-link{
   position:relative !important;
   z-index:1000 !important;
   pointer-events:auto !important;
-}
-
-
-/* Ad layer is active only after Play click */
-#videoad.ad-active{
-  position:fixed !important;
-  inset:0 !important;
-  z-index:2147483647 !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
 }
