@@ -710,3 +710,37 @@ hr {
   inset:0 !important;
   z-index:2 !important;
 }
+
+
+/* Final: after preroll, iframe opens in same player area */
+#player-shell{
+  position:relative !important;
+  width:100% !important;
+  height:40vw !important;
+  min-height:40vw !important;
+  background:#000 !important;
+  overflow:hidden !important;
+}
+
+#player-shell #game-frame{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  border:0 !important;
+  background:#000 !important;
+  z-index:1 !important;
+}
+
+#player-shell #game-start-screen{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:2 !important;
+}
+
+#preroll{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483647 !important;
+}

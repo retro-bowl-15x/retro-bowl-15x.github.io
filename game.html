@@ -65,19 +65,35 @@
 			AD_DISPLAY: 'center', //default, fullscreen, center, fill
 			LOADING_TEXT: 'loading advertisement',
 			PREROLL_ELEM: function(){return document.getElementById('preroll')},
-			AIP_COMPLETE: function (evt){ try{ if(window.__pr_cb){ window.__pr_cb(); } }catch(e){} finally{ window.__pr_cb=null; } },
-			AIP_REMOVE: function ()  {
-				// Here it's safe to remove the PREROLL_ELEM from the page if you want. But it's not recommend.
-			}
-		});
+			AIP_COMPLETE: function (evt) {
+        if (typeof window.openGameAfterPreroll === "function") {
+          window.openGameAfterPreroll();
+        }
+      },
+			AIP_REMOVE: function () {
+        if (typeof window.openGameAfterPreroll === "function") {
+          window.openGameAfterPreroll();
+        }
+      }});
 	});
 	
 	 
  
 				function show_preroll() {
- 					if (typeof aiptag.adplayer !== 'undefined') {
-				 	aiptag.cmd.player.push(function() { aiptag.adplayer.startPreRoll(); });
-					} else {
+  if (typeof aiptag !== 'undefined' && aiptag.adplayer && typeof aiptag.adplayer.startPreRoll === 'function') {
+    var p = document.getElementById('preroll');
+    if (p) {
+      p.style.display = 'block';
+      p.style.visibility = 'visible';
+      p.style.pointerEvents = 'auto';
+    }
+    aiptag.cmd.player.push(function() { aiptag.adplayer.startPreRoll(); });
+  } else {
+    if (typeof window.openGameAfterPreroll === "function") {
+      window.openGameAfterPreroll();
+    }
+  }
+} else {
 				    	
    //skip_play();
  
@@ -247,19 +263,33 @@
         .catch((error) => console.error("Error fetching data:", error));
     </script>
     
+
+
+
 <script>
-function openGameAfterPreroll() {
+window.openGameAfterPreroll = function () {
   var frame = document.getElementById("game-frame");
   var startScreen = document.getElementById("game-start-screen");
+  var preroll = document.getElementById("preroll");
+
+  if (preroll) {
+    preroll.innerHTML = "";
+    preroll.style.display = "none";
+    preroll.style.visibility = "hidden";
+    preroll.style.pointerEvents = "none";
+  }
 
   if (!frame) return false;
 
   var src = frame.dataset.src || frame.getAttribute("data-src") || "";
-  if (src) frame.setAttribute("src", src);
+  if (src) {
+    frame.setAttribute("src", src);
+  }
 
   frame.style.display = "block";
   frame.style.visibility = "visible";
   frame.style.opacity = "1";
+  frame.style.pointerEvents = "auto";
 
   if (startScreen) {
     startScreen.style.display = "none";
@@ -268,31 +298,34 @@ function openGameAfterPreroll() {
     startScreen.style.pointerEvents = "none";
   }
 
-  setTimeout(function(){
+  setTimeout(function () {
     try {
       if (frame.contentWindow) frame.contentWindow.focus();
-    } catch(e) {}
-  }, 300);
+    } catch (e) {}
+  }, 250);
 
   return false;
-}
+};
+</script>
 
+
+<script>
 function startGameFromPlay(e) {
   if (e) {
     e.preventDefault();
     e.stopPropagation();
   }
 
-  window.__pr_cb = openGameAfterPreroll;
-
   try {
     if (typeof show_preroll === "function") {
       show_preroll();
-    } else {
-      openGameAfterPreroll();
+    } else if (typeof window.openGameAfterPreroll === "function") {
+      window.openGameAfterPreroll();
     }
   } catch (err) {
-    openGameAfterPreroll();
+    if (typeof window.openGameAfterPreroll === "function") {
+      window.openGameAfterPreroll();
+    }
   }
 
   return false;
