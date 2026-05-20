@@ -43,58 +43,17 @@
 			LOADING_TEXT: 'loading advertisement',
 			PREROLL_ELEM: function(){return document.getElementById('videoad')},
 			AIP_COMPLETE: function (state)  {
-                if (typeof finishAd === "function") {
-                    finishAd();
-                } else if (typeof openGameAfterVideoAd === "function") {
-                    openGameAfterVideoAd();
-                }
-            }
+                // ad finished
             }
 		});
 
 			});
 
 		function show_videoad() {
-        try {
-            if (
-                window.aiptag &&
-                aiptag.adplayer &&
-                typeof aiptag.adplayer.startVideoAd === "function"
-            ) {
-                aiptag.cmd.player.push(function () {
-                    aiptag.adplayer.startVideoAd();
-                });
-
-                // FAILSAFE: if AIP_COMPLETE does not fire, open game after 7 seconds
-                setTimeout(function () {
-                    if (typeof finishAd === "function") {
-                        finishAd();
-                    } else if (typeof openGameAfterVideoAd === "function") {
-                        openGameAfterVideoAd();
-                    }
-                }, 7000);
-
-            } else {
-                if (typeof finishAd === "function") {
-                    finishAd();
-                } else {
-                    openGameAfterVideoAd();
-                }
-            }
-        } catch (err) {
-            if (typeof finishAd === "function") {
-                finishAd();
-            } else if (typeof openGameAfterVideoAd === "function") {
-                openGameAfterVideoAd();
-            }
-        }
-    });
-
-            } else {
-                openGameAfterVideoAd();
-            }
-        } catch (err) {
-            openGameAfterVideoAd();
+        if (typeof aiptag.adplayer !== 'undefined') {
+            aiptag.cmd.player.push(function() { 
+                aiptag.adplayer.startVideoAd(); 
+            });
         }
     } else {
 			//Adlib didnt load this could be due to an adblocker, timeout etc.
@@ -281,31 +240,25 @@
 
 
 
-
 <script>
-window.__adFinishedOnce = false;
-
-window.finishAd = function () {
-  if (window.__adFinishedOnce) return false;
-  window.__adFinishedOnce = true;
-
-  if (typeof openGameAfterVideoAd === "function") {
-    openGameAfterVideoAd();
+window.startGameFromPlay = function (e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
-  return false;
-};
+  try {
+    if (typeof show_videoad === "function") {
+      show_videoad();
+    }
+  } catch (err) {}
 
-window.openGameAfterVideoAd = function () {
   var frame = document.getElementById("game-frame");
   var startScreen = document.getElementById("game-start-screen");
 
-  if (!frame) return;
+  if (!frame) return false;
 
-  var targetSrc =
-    frame.dataset.src ||
-    frame.getAttribute("data-src") ||
-    "";
+  var targetSrc = frame.dataset.src || frame.getAttribute("data-src") || "";
 
   if (targetSrc) {
     frame.setAttribute("src", targetSrc);
@@ -325,31 +278,15 @@ window.openGameAfterVideoAd = function () {
     startScreen.classList.add("hidden");
   }
 
-  return false;
-};
-
-window.startGameFromPlay = function (e) {
-  if (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-
-  window.__adFinishedOnce = false;
-
-  try {
-    if (typeof show_videoad === "function") {
-      show_videoad();
-    } else {
-      finishAd();
-    }
-  } catch (err) {
-    finishAd();
-  }
+  setTimeout(function () {
+    try {
+      if (frame.contentWindow) frame.contentWindow.focus();
+    } catch (err) {}
+  }, 300);
 
   return false;
 };
 </script>
-
 
 <script src="game.js"></script>
   </body>
