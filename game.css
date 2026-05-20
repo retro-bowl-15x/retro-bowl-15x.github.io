@@ -646,3 +646,26 @@ hr {
   inset:0 !important;
   z-index:2147483647 !important;
 }
+
+
+/* FINAL CLICK FIX: videoad must not block menu/play before ad starts */
+#videoad{
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  background:transparent !important;
+}
+
+#videoad.aip-active{
+  display:block !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
+}
+
+#game-start-screen{
+  pointer-events:auto !important;
+}
+
+.nav, #nav, .nav-link, #play-game-btn{
+  pointer-events:auto !important;
+}

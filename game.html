@@ -41,12 +41,27 @@ aiptag.cmd.player.push(function() {
     LOADING_TEXT: 'loading advertisement',
     PREROLL_ELEM: function(){ return document.getElementById('videoad'); },
     AIP_COMPLETE: function (state) {
-      // ad finished
+      var v = document.getElementById('videoad');
+      if (v) {
+        v.classList.remove('aip-active');
+        v.innerHTML = '';
+        v.style.display = 'none';
+        v.style.visibility = 'hidden';
+        v.style.pointerEvents = 'none';
+      }
     }
   });
 });
 
 function show_videoad() {
+  var v = document.getElementById('videoad');
+  if (v) {
+    v.classList.add('aip-active');
+    v.style.display = 'block';
+    v.style.visibility = 'visible';
+    v.style.pointerEvents = 'auto';
+  }
+
   if (window.aiptag && aiptag.adplayer && typeof aiptag.adplayer.startVideoAd === 'function') {
     aiptag.cmd.player.push(function() { aiptag.adplayer.startVideoAd(); });
   }
