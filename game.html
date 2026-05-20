@@ -120,7 +120,7 @@ function show_videoad() {
                 </div>
               </div>
 
-              <button type="button" id="play-game-btn" onclick="return window.startGameFromPlay(event);" onclick="return window.startGameFromPlay(event);">PLAY GAME</button>
+              <button type="button" id="play-game-btn"   onclick="return window.startGameFromPlay(event);">PLAY GAME</button>
             </div>
           </div>
           <div class="tool-bar">
@@ -252,6 +252,9 @@ function show_videoad() {
 
 
 
+
+
+
 <script>
 window.openGameAfterAd = function () {
   var frame = document.getElementById("game-frame");
@@ -268,6 +271,7 @@ window.openGameAfterAd = function () {
   if (!frame) return false;
 
   var targetSrc = frame.dataset.src || frame.getAttribute("data-src") || "";
+
   if (targetSrc) {
     frame.setAttribute("src", targetSrc);
   }
@@ -275,21 +279,10 @@ window.openGameAfterAd = function () {
   frame.style.display = "block";
   frame.style.visibility = "visible";
   frame.style.opacity = "1";
-  frame.style.pointerEvents = "auto";
-  frame.style.zIndex = "20";
 
   if (startScreen) {
     startScreen.style.display = "none";
-    startScreen.style.visibility = "hidden";
-    startScreen.style.opacity = "0";
-    startScreen.style.pointerEvents = "none";
   }
-
-  setTimeout(function () {
-    try {
-      if (frame.contentWindow) frame.contentWindow.focus();
-    } catch (err) {}
-  }, 300);
 
   return false;
 };
