@@ -20,40 +20,7 @@
     <title></title>
 	<link class="favicon" rel="icon" type="image/x-icon" href="/media/drive.ico" />
     <link rel="stylesheet" href="game.css?vsfa1" />
-<script>
-	window.aiptag = window.aiptag || {cmd: []};
-	aiptag.cmd.display = aiptag.cmd.display || [];
-	aiptag.cmd.player = aiptag.cmd.player || [];
 
-	//CMP tool settings
-	aiptag.cmp = {
-		show: true,
-		position: "centered",  //centered, bottom
-		button: true,
-		buttonText: "Privacy settings",
-		buttonPosition: "bottom-left" //bottom-left, bottom-right, bottom-center, top-left, top-right
-	}
-	aiptag.cmd.player.push(function() {
-		aiptag.adplayer = new aipPlayer({
-			AD_WIDTH: 960,
-			AD_HEIGHT: 540,
-			AD_DISPLAY: 'center', //default, fullscreen, fill, center, modal-center
-			LOADING_TEXT: 'loading advertisement',
-			PREROLL_ELEM: function(){return document.getElementById('videoad')},
-			AIP_COMPLETE: function (state)  {
-				// lesson_detail();
-			}
-		});
-
-			});
-
-		function show_videoad() {
-		if (window.aiptag && aiptag.adplayer && typeof aiptag.adplayer.startVideoAd === 'function') {
-			aiptag.cmd.player.push(function() { aiptag.adplayer.startVideoAd(); });
-		}
-	}
-		</script>
-	<script async src="//api.adinplay.com/libs/aiptag/pub/MNS/agario.cafe/tag.min.js"></script>
 
 
 
@@ -62,10 +29,68 @@
         <div class="loader"></div>
     </div>
 
-  </head>
+  
+<script>
+window.aiptag = window.aiptag || {cmd: []};
+aiptag.cmd.display = aiptag.cmd.display || [];
+aiptag.cmd.player = aiptag.cmd.player || [];
+
+aiptag.cmp = {
+  show: true,
+  position: "centered",
+  button: true,
+  buttonText: "Privacy settings",
+  buttonPosition: "bottom-left"
+};
+
+aiptag.cmd.player.push(function() {
+  aiptag.adplayer = new aipPlayer({
+    AD_WIDTH: 960,
+    AD_HEIGHT: 540,
+    AD_DISPLAY: "center",
+    LOADING_TEXT: "loading advertisement",
+    PREROLL_ELEM: function(){ return document.getElementById("videoad"); },
+    AIP_COMPLETE: function (state) {
+      var v = document.getElementById("videoad");
+      if (v) {
+        v.innerHTML = "";
+        v.style.display = "none";
+        v.style.visibility = "hidden";
+        v.style.pointerEvents = "none";
+      }
+      if (typeof window.openGameAfterAd === "function") {
+        window.openGameAfterAd();
+      }
+    }
+    }
+  });
+});
+
+function show_videoad() {
+  var v = document.getElementById("videoad");
+  if (v) {
+    v.style.display = "block";
+    v.style.visibility = "visible";
+    v.style.pointerEvents = "auto";
+  }
+
+  if (typeof aiptag !== "undefined" && aiptag.adplayer && typeof aiptag.adplayer.startVideoAd === "function") {
+    aiptag.cmd.player.push(function() {
+      aiptag.adplayer.startVideoAd();
+    });
+  } else {
+    if (typeof window.openGameAfterAd === "function") {
+      window.openGameAfterAd();
+    }
+  }
+}
+</script>
+<script async src="//api.adinplay.com/libs/aiptag/pub/MNS/agario.cafe/tag.min.js"></script>
+
+</head>
   <body>
     <div id="videoad"></div>
-      <nav class="nav" id="nav">
+<nav class="nav" id="nav">
 
       <a href="/" class="logo2" style="background-color: transparent">
         <img src="/media/logom.png" alt="retro-bowl-15x.github.io Logo" />
@@ -90,14 +115,12 @@
               <div class="game-ad-970-wrap">
                 <div id='agario-cafe_970x250'>
                   <script type='text/javascript'>
-                    window.aiptag = window.aiptag || {cmd: []};
-                    aiptag.cmd.display = aiptag.cmd.display || [];
-                    aiptag.cmd.display.push(function() { aipDisplayTag.display('agario-cafe_970x250'); });
+                    window.aiptag = window.aiptag || {cmd: []}; aiptag.cmd.display = aiptag.cmd.display || []; aiptag.cmd.display.push(function() { aipDisplayTag.display('agario-cafe_970x250'); });
                   </script>
                 </div>
               </div>
 
-              <button type="button" id="play-game-btn" onclick="return window.startGameFromPlay(event);">PLAY GAME</button>
+              <button type="button" id="play-game-btn" onclick="return window.startGameFromPlay(event);" onclick="return window.startGameFromPlay(event);">PLAY GAME</button>
             </div>
           </div>
           <div class="tool-bar">
@@ -226,15 +249,21 @@
         .catch((error) => console.error("Error fetching data:", error));
     </script>
     
-<script>
-window.startGameFromPlay = function (e) {
-  if (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
 
+
+
+<script>
+window.openGameAfterAd = function () {
   var frame = document.getElementById("game-frame");
   var startScreen = document.getElementById("game-start-screen");
+  var v = document.getElementById("videoad");
+
+  if (v) {
+    v.innerHTML = "";
+    v.style.display = "none";
+    v.style.visibility = "hidden";
+    v.style.pointerEvents = "none";
+  }
 
   if (!frame) return false;
 
@@ -256,17 +285,30 @@ window.startGameFromPlay = function (e) {
     startScreen.style.pointerEvents = "none";
   }
 
-  try {
-    if (typeof show_videoad === "function") {
-      show_videoad();
-    }
-  } catch (err) {}
-
   setTimeout(function () {
     try {
       if (frame.contentWindow) frame.contentWindow.focus();
     } catch (err) {}
   }, 300);
+
+  return false;
+};
+
+window.startGameFromPlay = function (e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  try {
+    if (typeof show_videoad === "function") {
+      show_videoad();
+    } else {
+      window.openGameAfterAd();
+    }
+  } catch (err) {
+    window.openGameAfterAd();
+  }
 
   return false;
 };

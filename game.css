@@ -673,3 +673,65 @@ hr {
   height:calc(100vh - 44px) !important;
   min-height:calc(100vh - 44px) !important;
 }
+
+
+/* Video ad container - geography-like, no extra black overlay from our CSS */
+#videoad{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483647 !important;
+  display:none;
+  visibility:hidden;
+  background:transparent !important;
+}
+
+#videoad > *{
+  max-width:none !important;
+}
+
+/* Keep start screen until ad completes */
+#player-shell{
+  position:relative !important;
+  width:100% !important;
+  height:40vw !important;
+  min-height:40vw !important;
+  background:#000 !important;
+  overflow:hidden !important;
+}
+
+#game-frame{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  border:0 !important;
+  background:#000 !important;
+  z-index:20 !important;
+}
+
+#game-start-screen{
+  z-index:30 !important;
+}
+
+
+/* FINAL FIX: videoad must not block menu/play before ad starts */
+#videoad{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483647 !important;
+  display:none !important;
+  visibility:hidden !important;
+  pointer-events:none !important;
+  background:transparent !important;
+}
+
+/* when JS sets inline display:block + visibility:visible, allow click inside ad */
+#videoad[style*="display: block"],
+#videoad[style*="display:block"]{
+  pointer-events:auto !important;
+}
+
+.nav, #nav, .nav-link, #play-game-btn{
+  pointer-events:auto !important;
+}
