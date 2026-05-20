@@ -576,22 +576,3 @@ hr {
 .logo2 img {
   height: 32px;
 }
-
-
-/* Smaller preview image */
-#game-start-img{
-  width:210px !important;
-  max-width:36% !important;
-  max-height:130px !important;
-}
-
-/* center ad block */
-#agario-cafe_970x250{
-  width:970px;
-  height:250px;
-  max-width:100%;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
