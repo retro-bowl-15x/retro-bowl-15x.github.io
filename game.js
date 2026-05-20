@@ -91,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("macvgRecents", eRecent);
   }
   //Above is code for adding the game to recents
+
   const sideSearch = document.getElementById("sideSearch");
   const nothing = document.getElementById("nothing");
   if (sideSearch && sideSearch.parentElement && nothing) {

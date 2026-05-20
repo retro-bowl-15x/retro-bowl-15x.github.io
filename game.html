@@ -41,8 +41,8 @@
 			LOADING_TEXT: 'loading advertisement',
 			PREROLL_ELEM: function(){return document.getElementById('videoad')},
 			AIP_COMPLETE: function (state)  {
-                if (typeof window.__startLessonGame === "function") {
-                    window.__startLessonGame();
+                if (typeof window.openGameAfterAd === "function") {
+                    window.openGameAfterAd();
                 }
             }
 		});
@@ -50,21 +50,21 @@
 			});
 
 		function show_videoad() {
-        var videoAdBox = document.getElementById('videoad');
-        if (videoAdBox) {
-            videoAdBox.style.display = 'flex';
-            videoAdBox.style.visibility = 'visible';
-            videoAdBox.style.opacity = '1';
-            videoAdBox.style.pointerEvents = 'auto';
+        var videoBox = document.getElementById("videoad");
+        if (videoBox) {
+            videoBox.style.display = "flex";
+            videoBox.style.visibility = "visible";
+            videoBox.style.opacity = "1";
+            videoBox.style.pointerEvents = "auto";
         }
 
-        if (window.aiptag && aiptag.adplayer && typeof aiptag.adplayer.startVideoAd === 'function') {
+        if (window.aiptag && aiptag.adplayer && typeof aiptag.adplayer.startVideoAd === "function") {
             aiptag.cmd.player.push(function() {
                 aiptag.adplayer.startVideoAd();
             });
         } else {
-            if (typeof window.__startLessonGame === "function") {
-                window.__startLessonGame();
+            if (typeof window.openGameAfterAd === "function") {
+                window.openGameAfterAd();
             }
         }
     }
@@ -99,12 +99,12 @@
     <div class="game-container">
       <div class="game-related">
         <div class="actual" id="gameframe">
-          <div id="lesson-start-panel">
-            <img id="lesson-start-image" src="" alt="Game Preview" />
-            <div id="lesson-970-ad">
-              <!-- 970x250 REKLAM KODUNU BURAYA YAPIŞTIR -->
+          <div id="game-start-panel">
+            <img id="game-start-img" src="" alt="Game Preview">
+            <div id="game-970-ad">
+              <!-- 970x250 REKLAM KODUNU BURAYA EKLE -->
             </div>
-            <button type="button" id="lesson-play-btn">PLAY</button>
+            <button type="button" id="game-play-btn">PLAY</button>
           </div>
           <iframe src="" frameborder="0" id="game-frame" data-src="" style="display:none;"></iframe>
           <div class="tool-bar">
@@ -175,10 +175,10 @@
           }
           newArray.forEach((game) => {
             if (game.id === parseInt(targetUrl)) {
-              const frameEl = document.getElementById("game-frame");
-              const startImageEl = document.getElementById("lesson-start-image");
-              frameEl.dataset.src = game.link;
-              if (startImageEl) startImageEl.src = game.link + game.thumb;
+              const gameFrameEl = document.getElementById("game-frame");
+              const gameStartImg = document.getElementById("game-start-img");
+              gameFrameEl.dataset.src = game.link;
+              if (gameStartImg) gameStartImg.src = game.link + game.thumb;
               const titleFromStorage = localStorage.getItem("title");
               if (titleFromStorage && titleFromStorage.trim() !== "") {
                 const pageTitle = document.getElementsByTagName("title")[0];
@@ -236,22 +236,22 @@
     </script>
 
     <script>
-      window.__startLessonGame = function () {
+      window.openGameAfterAd = function () {
         var frame = document.getElementById("game-frame");
-        var panel = document.getElementById("lesson-start-panel");
-        var videoAdBox = document.getElementById("videoad");
+        var panel = document.getElementById("game-start-panel");
+        var videoBox = document.getElementById("videoad");
 
-        if (videoAdBox) {
-          videoAdBox.innerHTML = "";
-          videoAdBox.style.display = "none";
-          videoAdBox.style.visibility = "hidden";
-          videoAdBox.style.pointerEvents = "none";
+        if (videoBox) {
+          videoBox.innerHTML = "";
+          videoBox.style.display = "none";
+          videoBox.style.visibility = "hidden";
+          videoBox.style.pointerEvents = "none";
         }
 
         if (frame) {
-          var targetSrc = frame.dataset.src || frame.getAttribute("data-src") || "";
-          if (targetSrc && !frame.src) {
-            frame.src = targetSrc;
+          var src = frame.dataset.src || frame.getAttribute("data-src") || "";
+          if (src && !frame.getAttribute("src")) {
+            frame.setAttribute("src", src);
           }
           frame.style.display = "block";
         }
@@ -262,29 +262,21 @@
       };
 
       document.addEventListener("DOMContentLoaded", function () {
-        var playBtn = document.getElementById("lesson-play-btn");
+        var playBtn = document.getElementById("game-play-btn");
         if (!playBtn) return;
 
-        playBtn.addEventListener("click", function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-
-          var videoAdBox = document.getElementById("videoad");
-          if (videoAdBox) {
-            videoAdBox.style.display = "flex";
-            videoAdBox.style.visibility = "visible";
-            videoAdBox.style.opacity = "1";
-            videoAdBox.style.pointerEvents = "auto";
-          }
+        playBtn.addEventListener("click", function (e) {
+          e.preventDefault();
+          e.stopPropagation();
 
           try {
             if (typeof show_videoad === "function") {
               show_videoad();
             } else {
-              window.__startLessonGame();
+              window.openGameAfterAd();
             }
-          } catch (e) {
-            window.__startLessonGame();
+          } catch (err) {
+            window.openGameAfterAd();
           }
         });
       });
