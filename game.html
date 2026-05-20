@@ -43,9 +43,12 @@
 			LOADING_TEXT: 'loading advertisement',
 			PREROLL_ELEM: function(){return document.getElementById('videoad')},
 			AIP_COMPLETE: function (state)  {
-                if (typeof openGameAfterVideoAd === "function") {
+                if (typeof finishAd === "function") {
+                    finishAd();
+                } else if (typeof openGameAfterVideoAd === "function") {
                     openGameAfterVideoAd();
                 }
+            }
             }
 		});
 
@@ -53,13 +56,39 @@
 
 		function show_videoad() {
         try {
-            if (window.aiptag &&
+            if (
+                window.aiptag &&
                 aiptag.adplayer &&
-                typeof aiptag.adplayer.startVideoAd === "function") {
-
-                aiptag.cmd.player.push(function() {
+                typeof aiptag.adplayer.startVideoAd === "function"
+            ) {
+                aiptag.cmd.player.push(function () {
                     aiptag.adplayer.startVideoAd();
                 });
+
+                // FAILSAFE: if AIP_COMPLETE does not fire, open game after 7 seconds
+                setTimeout(function () {
+                    if (typeof finishAd === "function") {
+                        finishAd();
+                    } else if (typeof openGameAfterVideoAd === "function") {
+                        openGameAfterVideoAd();
+                    }
+                }, 7000);
+
+            } else {
+                if (typeof finishAd === "function") {
+                    finishAd();
+                } else {
+                    openGameAfterVideoAd();
+                }
+            }
+        } catch (err) {
+            if (typeof finishAd === "function") {
+                finishAd();
+            } else if (typeof openGameAfterVideoAd === "function") {
+                openGameAfterVideoAd();
+            }
+        }
+    });
 
             } else {
                 openGameAfterVideoAd();
@@ -252,7 +281,21 @@
 
 
 
+
 <script>
+window.__adFinishedOnce = false;
+
+window.finishAd = function () {
+  if (window.__adFinishedOnce) return false;
+  window.__adFinishedOnce = true;
+
+  if (typeof openGameAfterVideoAd === "function") {
+    openGameAfterVideoAd();
+  }
+
+  return false;
+};
+
 window.openGameAfterVideoAd = function () {
   var frame = document.getElementById("game-frame");
   var startScreen = document.getElementById("game-start-screen");
@@ -291,19 +334,22 @@ window.startGameFromPlay = function (e) {
     e.stopPropagation();
   }
 
+  window.__adFinishedOnce = false;
+
   try {
     if (typeof show_videoad === "function") {
       show_videoad();
     } else {
-      openGameAfterVideoAd();
+      finishAd();
     }
   } catch (err) {
-    openGameAfterVideoAd();
+    finishAd();
   }
 
   return false;
 };
 </script>
+
 
 <script src="game.js"></script>
   </body>
