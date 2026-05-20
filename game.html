@@ -103,7 +103,7 @@
       </div>
     </div>
 
-    <button type="button" id="play-game-btn">PLAY GAME</button>
+    <button type="button" id="play-game-btn" onclick="window.startGameFromPlay(event)">PLAY GAME</button>
   </div>
 </div>
 
@@ -234,35 +234,49 @@
         .catch((error) => console.error("Error fetching data:", error));
     </script>
     
+
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const playBtn = document.getElementById("play-game-btn");
-  const startScreen = document.getElementById("game-start-screen");
-  const gameFrame = document.getElementById("game-frame");
-
-  if (!playBtn || !startScreen || !gameFrame) return;
-
-  playBtn.addEventListener("click", function (e) {
+window.startGameFromPlay = function (e) {
+  if (e) {
     e.preventDefault();
     e.stopPropagation();
+  }
 
-    const targetSrc = gameFrame.dataset.src || gameFrame.getAttribute("data-src");
+  var frame = document.getElementById("game-frame");
+  var startScreen = document.getElementById("game-start-screen");
 
-    if (targetSrc) {
-      gameFrame.setAttribute("src", targetSrc);
-    }
+  if (!frame) return false;
 
-    gameFrame.style.display = "block";
-    gameFrame.style.visibility = "visible";
-    gameFrame.style.opacity = "1";
+  var targetSrc = frame.dataset.src || frame.getAttribute("data-src") || "";
 
-    setTimeout(function () {
-      startScreen.classList.add("hidden");
-      startScreen.style.display = "none";
-    }, 100);
-  });
-});
+  if (targetSrc) {
+    frame.setAttribute("src", targetSrc);
+  }
+
+  frame.style.display = "block";
+  frame.style.visibility = "visible";
+  frame.style.opacity = "1";
+  frame.style.pointerEvents = "auto";
+  frame.style.zIndex = "20";
+
+  if (startScreen) {
+    startScreen.style.display = "none";
+    startScreen.style.visibility = "hidden";
+    startScreen.style.opacity = "0";
+    startScreen.style.pointerEvents = "none";
+    startScreen.classList.add("hidden");
+  }
+
+  setTimeout(function () {
+    try {
+      if (frame.contentWindow) frame.contentWindow.focus();
+    } catch (err) {}
+  }, 300);
+
+  return false;
+};
 </script>
+
 <script src="game.js"></script>
   </body>
 </html>
