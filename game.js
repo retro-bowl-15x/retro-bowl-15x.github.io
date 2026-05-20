@@ -42,14 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
   gameFrame.addEventListener("mouseleave", () => (isGameActive = false));
   setInterval(() => {
     const realFrame = document.getElementById("game-frame");
-    if (
-      realFrame &&
-      realFrame.style.display !== "none" &&
-      realFrame.contentWindow &&
-      isGameActive &&
-      document.activeElement !== realFrame
-    ) {
-      realFrame.contentWindow.focus();
+    if (realFrame && realFrame.style.display !== "none" && realFrame.contentWindow && isGameActive) {
+      try { realFrame.contentWindow.focus(); } catch (e) {}
     }
   }, 1000);
   //Above is code for full screen and focusing on the frame
@@ -99,48 +93,36 @@ document.addEventListener("DOMContentLoaded", () => {
   //Above is code for adding the game to recents
   const sideSearch = document.getElementById("sideSearch");
   const nothing = document.getElementById("nothing");
-
   if (sideSearch && sideSearch.parentElement && nothing) {
     const sideSearchForm = sideSearch.parentElement;
     nothing.style.paddingTop = "0px";
     nothing.style.display = "none";
-
     sideSearch.addEventListener("focus", () => (isGameActive = false));
     sideSearch.addEventListener("blur", () => (isGameActive = true));
-
     sideSearchForm.addEventListener("submit", (e) => {
       e.preventDefault();
-
       const list = document.getElementById("list");
       if (!list) return;
-
       let searchTerm = sideSearch.value.toLowerCase();
       let results = [];
       list.innerHTML = "";
-
       for (var i = 0; i < newArray.length; i++) {
         let item = newArray[i].name;
         var itemText = item.toLowerCase();
-
         if (itemText.includes(searchTerm)) {
           let newGameElement = document.createElement("div");
           newGameElement.classList.add("side-game");
           newGameElement.innerHTML = item;
           list.appendChild(newGameElement);
           results.push(item);
-
           let newGameID = newArray[i].id;
-          newGameElement.style.backgroundImage = `url(${
-            newArray[i].link + newArray[i].thumb
-          })`;
-
+          newGameElement.style.backgroundImage = `url(${newArray[i].link + newArray[i].thumb})`;
           newGameElement.addEventListener("click", () => {
             const params = new URLSearchParams({ target: newGameID });
             window.location.href = `game.html?${params.toString()}`;
           });
         }
       }
-
       if (results.length < 1) {
         nothing.style.display = "block";
         nothing.style.paddingTop = "20px";

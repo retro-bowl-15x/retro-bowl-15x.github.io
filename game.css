@@ -578,145 +578,7 @@ hr {
 }
 
 
-/* Start screen before game */
-#game-start-screen{
-  width:100%;
-  min-height:40vw;
-  background:#000;
-  border-radius:10px 10px 0 0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:25px;
-  padding:20px;
-}
-
-#agario-cafe_970x250{
-  width:970px;
-  height:250px;
-  max-width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
-
-#play-game-btn{
-  background:#ff9800;
-  color:#fff;
-  border:none;
-  border-radius:10px;
-  padding:16px 55px;
-  font-size:26px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-#play-game-btn:hover{
-  transform:scale(1.05);
-}
-
-
-/* Keep PLAY below the ad */
-#play-game-btn{
-  display:block !important;
-  margin:0 auto !important;
-  flex:0 0 auto !important;
-}
-
-
-/* Final clean start screen layout */
-#game-start-screen{
-  width:100% !important;
-  min-height:40vw !important;
-  background:#000 !important;
-  border-radius:10px 10px 0 0 !important;
-  display:flex !important;
-  flex-direction:column !important;
-  align-items:center !important;
-  justify-content:center !important;
-  gap:25px !important;
-  padding:20px !important;
-  box-sizing:border-box !important;
-  overflow:visible !important;
-}
-
-.game-ad-970-wrap{
-  width:970px !important;
-  height:250px !important;
-  max-width:970px !important;
-  margin:0 auto !important;
-  display:block !important;
-  position:relative !important;
-  overflow:visible !important;
-  text-align:center !important;
-  flex:0 0 auto !important;
-}
-
-.game-ad-970-wrap #agario-cafe_970x250{
-  width:970px !important;
-  height:250px !important;
-  min-width:970px !important;
-  min-height:250px !important;
-  display:block !important;
-  margin:0 auto !important;
-  padding:0 !important;
-  overflow:visible !important;
-  position:relative !important;
-}
-
-#play-game-btn{
-  display:block !important;
-  position:relative !important;
-  z-index:10 !important;
-  background:#ff9800 !important;
-  color:#fff !important;
-  border:none !important;
-  border-radius:10px !important;
-  padding:16px 55px !important;
-  font-size:26px !important;
-  font-weight:bold !important;
-  cursor:pointer !important;
-  margin:0 auto !important;
-  flex:0 0 auto !important;
-}
-
-#play-game-btn:hover{
-  transform:scale(1.05) !important;
-}
-
-
-/* No-shift fix: PLAY screen and iframe occupy the exact same player slot */
-.actual{
-  display:block !important;
-}
-
-#game-start-screen,
-#game-frame{
-  width:100% !important;
-  height:40vw !important;
-  min-height:40vw !important;
-  margin:0 !important;
-  padding-left:20px !important;
-  padding-right:20px !important;
-  box-sizing:border-box !important;
-  border-radius:10px 10px 0 0 !important;
-}
-
-#game-frame{
-  padding:0 !important;
-  display:none;
-  background:#000 !important;
-  border:0 !important;
-}
-
-.tool-bar{
-  margin-top:0 !important;
-}
-
-
-/* FINAL PLAYER SHELL FIX: start screen and iframe use same exact area */
+/* Clean game.html rebuild: same-slot play screen + iframe */
 #player-shell{
   position:relative !important;
   width:100% !important;
@@ -740,7 +602,7 @@ hr {
   border:0 !important;
   border-radius:10px 10px 0 0 !important;
   background:#000 !important;
-  z-index:1 !important;
+  z-index:20 !important;
 }
 
 #player-shell #game-start-screen{
@@ -759,21 +621,21 @@ hr {
   align-items:center !important;
   justify-content:center !important;
   gap:25px !important;
-  z-index:2 !important;
+  z-index:30 !important;
 }
 
-#player-shell .game-ad-970-wrap{
+.game-ad-970-wrap{
   width:970px !important;
   height:250px !important;
   max-width:970px !important;
   margin:0 auto !important;
   display:block !important;
   overflow:visible !important;
-  flex:0 0 auto !important;
   text-align:center !important;
+  flex:0 0 auto !important;
 }
 
-#player-shell #agario-cafe_970x250{
+.game-ad-970-wrap #agario-cafe_970x250{
   width:970px !important;
   height:250px !important;
   min-width:970px !important;
@@ -783,10 +645,10 @@ hr {
   overflow:visible !important;
 }
 
-#player-shell #play-game-btn{
+#play-game-btn{
   display:block !important;
   position:relative !important;
-  z-index:3 !important;
+  z-index:40 !important;
   background:#ff9800 !important;
   color:#fff !important;
   border:none !important;
@@ -797,116 +659,17 @@ hr {
   cursor:pointer !important;
   margin:0 auto !important;
   flex:0 0 auto !important;
+  pointer-events:auto !important;
 }
 
-.tool-bar{
-  margin-top:0 !important;
+#videoad{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483647 !important;
 }
 
 .actual:fullscreen #player-shell{
   width:100vw !important;
   height:calc(100vh - 44px) !important;
   min-height:calc(100vh - 44px) !important;
-}
-
-
-/* Final PLAY visibility fix */
-#player-shell{
-  position:relative !important;
-  overflow:hidden !important;
-}
-
-#game-frame{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  min-height:0 !important;
-  z-index:5 !important;
-  background:#000 !important;
-  border:0 !important;
-}
-
-#game-start-screen{
-  z-index:10 !important;
-}
-
-#game-start-screen.hidden{
-  display:none !important;
-}
-
-
-/* DIRECT ONCLICK FINAL FIX */
-#player-shell{
-  position:relative !important;
-  width:100% !important;
-  height:40vw !important;
-  min-height:40vw !important;
-  background:#000 !important;
-  overflow:hidden !important;
-  border-radius:10px 10px 0 0 !important;
-}
-
-#player-shell #game-frame,
-#game-frame{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  min-height:0 !important;
-  border:0 !important;
-  background:#000 !important;
-  z-index:20 !important;
-}
-
-#player-shell #game-start-screen,
-#game-start-screen{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  min-height:0 !important;
-  z-index:30 !important;
-  background:#000 !important;
-}
-
-#game-start-screen.hidden{
-  display:none !important;
-  visibility:hidden !important;
-  opacity:0 !important;
-  pointer-events:none !important;
-}
-
-#play-game-btn{
-  position:relative !important;
-  z-index:40 !important;
-  pointer-events:auto !important;
-  cursor:pointer !important;
-}
-
-
-/* Geography-style video preroll layer */
-#videoad{
-  position:fixed !important;
-  inset:0 !important;
-  z-index:2147483647 !important;
-  display:none;
-  align-items:center !important;
-  justify-content:center !important;
-  background:rgba(0,0,0,0.72) !important;
-  pointer-events:auto !important;
-}
-
-#videoad:empty{
-  display:none !important;
-}
-
-#videoad > *{
-  max-width:100vw !important;
-  max-height:100vh !important;
-}
-
-/* keep game visible behind preroll */
-#game-frame{
-  background:#000 !important;
 }
