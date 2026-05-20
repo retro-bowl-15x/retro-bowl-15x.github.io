@@ -578,67 +578,20 @@ hr {
 }
 
 
-/* Start panel: game image + 970x250 ad + PLAY */
-#game-start-panel{
-  width:100%;
-  min-height:40vw;
-  background:#000;
-  border-radius:10px 10px 0 0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:18px;
-  padding:24px 10px;
-  box-sizing:border-box;
-}
-
+/* Smaller preview image */
 #game-start-img{
-  width:420px;
-  max-width:72%;
-  max-height:260px;
-  object-fit:cover;
-  border-radius:12px;
-  display:block;
+  width:210px !important;
+  max-width:36% !important;
+  max-height:130px !important;
 }
 
-#game-970-ad{
+/* center ad block */
+#agario-cafe_970x250{
   width:970px;
   height:250px;
-  max-width:calc(100% - 20px);
+  max-width:100%;
+  margin:0 auto;
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
-  background:transparent;
-  margin:0 auto;
-}
-
-#game-play-btn{
-  background:#ff9800;
-  color:#fff;
-  border:0;
-  border-radius:10px;
-  padding:14px 58px;
-  font-size:24px;
-  font-weight:700;
-  cursor:pointer;
-  line-height:1;
-  text-transform:uppercase;
-  display:block;
-  margin:0 auto;
-}
-
-#game-frame{
-  width:100%;
-  height:40vw;
-  min-height:40vw;
-  border-radius:10px 10px 0 0;
-  background:#000;
-}
-
-#videoad{
-  position:fixed !important;
-  inset:0 !important;
-  z-index:2147483647 !important;
 }
