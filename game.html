@@ -43,17 +43,31 @@
 			LOADING_TEXT: 'loading advertisement',
 			PREROLL_ELEM: function(){return document.getElementById('videoad')},
 			AIP_COMPLETE: function (state)  {
-				// lesson_detail();
-			}
+                if (typeof openGameAfterVideoAd === "function") {
+                    openGameAfterVideoAd();
+                }
+            }
 		});
 
 			});
 
 		function show_videoad() {
-		//check if the adslib is loaded correctly or blocked by adblockers etc.
-		if (typeof aiptag.adplayer !== 'undefined') {
-			aiptag.cmd.player.push(function() { aiptag.adplayer.startVideoAd(); });
-		} else {
+        try {
+            if (window.aiptag &&
+                aiptag.adplayer &&
+                typeof aiptag.adplayer.startVideoAd === "function") {
+
+                aiptag.cmd.player.push(function() {
+                    aiptag.adplayer.startVideoAd();
+                });
+
+            } else {
+                openGameAfterVideoAd();
+            }
+        } catch (err) {
+            openGameAfterVideoAd();
+        }
+    } else {
 			//Adlib didnt load this could be due to an adblocker, timeout etc.
 			//Please add your script here that starts the content, this usually is the same script as added in AIP_COMPLETE.
 			alert("Ad Could not be loaded, load your content here");
@@ -235,19 +249,20 @@
     </script>
     
 
-<script>
-window.startGameFromPlay = function (e) {
-  if (e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
 
+
+
+<script>
+window.openGameAfterVideoAd = function () {
   var frame = document.getElementById("game-frame");
   var startScreen = document.getElementById("game-start-screen");
 
-  if (!frame) return false;
+  if (!frame) return;
 
-  var targetSrc = frame.dataset.src || frame.getAttribute("data-src") || "";
+  var targetSrc =
+    frame.dataset.src ||
+    frame.getAttribute("data-src") ||
+    "";
 
   if (targetSrc) {
     frame.setAttribute("src", targetSrc);
@@ -267,11 +282,24 @@ window.startGameFromPlay = function (e) {
     startScreen.classList.add("hidden");
   }
 
-  setTimeout(function () {
-    try {
-      if (frame.contentWindow) frame.contentWindow.focus();
-    } catch (err) {}
-  }, 300);
+  return false;
+};
+
+window.startGameFromPlay = function (e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  try {
+    if (typeof show_videoad === "function") {
+      show_videoad();
+    } else {
+      openGameAfterVideoAd();
+    }
+  } catch (err) {
+    openGameAfterVideoAd();
+  }
 
   return false;
 };
