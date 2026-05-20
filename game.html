@@ -245,12 +245,16 @@ document.addEventListener("DOMContentLoaded", function () {
       e.preventDefault();
       e.stopPropagation();
 
-      const src = gameFrame.dataset.src || gameFrame.getAttribute("data-src") || "";
-      if (src && !gameFrame.getAttribute("src")) {
-        gameFrame.setAttribute("src", src);
+      const targetSrc = gameFrame.dataset.src || gameFrame.getAttribute("data-src");
+
+      if (targetSrc) {
+        gameFrame.setAttribute("src", targetSrc);
       }
 
       gameFrame.style.display = "block";
+      gameFrame.style.visibility = "visible";
+      gameFrame.style.opacity = "1";
+
       startScreen.style.display = "none";
     });
   }
