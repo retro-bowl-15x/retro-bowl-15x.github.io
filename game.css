@@ -578,25 +578,39 @@ hr {
 }
 
 
-/* Clean game.html start screen */
-.actual{
+/* FINAL: iframe ve play/reklam aynı slotta */
+#player-shell{
   position:relative !important;
-}
-
-#game-frame{
-  width:100% !important;
-  height:40vw !important;
-  min-height:40vw !important;
-  border-radius:10px 10px 0 0 !important;
-  background:#000 !important;
-}
-
-#game-start-screen{
   width:100% !important;
   height:40vw !important;
   min-height:40vw !important;
   background:#000 !important;
   border-radius:10px 10px 0 0 !important;
+  overflow:hidden !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+
+#player-shell #game-frame{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  border:0 !important;
+  background:#000 !important;
+  display:none;
+  z-index:1 !important;
+  border-radius:10px 10px 0 0 !important;
+}
+
+#player-shell #game-start-screen{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  background:#000 !important;
   display:flex !important;
   flex-direction:column !important;
   align-items:center !important;
@@ -604,6 +618,8 @@ hr {
   gap:25px !important;
   padding:20px !important;
   box-sizing:border-box !important;
+  z-index:2 !important;
+  border-radius:10px 10px 0 0 !important;
 }
 
 .game-ad-970-wrap{
@@ -637,35 +653,17 @@ hr {
   cursor:pointer !important;
   display:block !important;
   margin:0 auto !important;
-  position:relative !important;
-  z-index:5 !important;
+  z-index:3 !important;
+  pointer-events:auto !important;
 }
 
 #videoad{
   position:fixed !important;
   inset:0 !important;
   z-index:2147483647 !important;
+  pointer-events:none;
 }
 
-
-/* FINAL CLICK FIX: videoad must not block menu/play before ad starts */
-#videoad{
-  display:none !important;
-  visibility:hidden !important;
-  pointer-events:none !important;
-  background:transparent !important;
-}
-
-#videoad.aip-active{
-  display:block !important;
-  visibility:visible !important;
-  pointer-events:auto !important;
-}
-
-#game-start-screen{
-  pointer-events:auto !important;
-}
-
-.nav, #nav, .nav-link, #play-game-btn{
-  pointer-events:auto !important;
+#videoad > *{
+  pointer-events:auto;
 }

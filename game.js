@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch((error) => console.error("Error fetching data:", error));
   //Above is code for download button
   const gameFrame = document.getElementById("gameframe");
-  const gameIFrame = gameFrame.children[0].contentWindow;
+  const gameIFrame = document.getElementById("game-frame").contentWindow;
   const fullScreen = document.getElementById("fullscreen");
   let isGameActive = true;
   fullScreen.addEventListener("click", function () {
@@ -99,40 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
     nothing.style.display = "none";
     sideSearch.addEventListener("focus", () => (isGameActive = false));
     sideSearch.addEventListener("blur", () => (isGameActive = true));
-    sideSearchForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const list = document.getElementById("list");
-      if (!list) return;
-      let searchTerm = sideSearch.value.toLowerCase();
-      let results = [];
-      list.innerHTML = "";
-      for (var i = 0; i < newArray.length; i++) {
-        let item = newArray[i].name;
-        var itemText = item.toLowerCase();
-        if (itemText.includes(searchTerm)) {
-          let newGameElement = document.createElement("div");
-          newGameElement.classList.add("side-game");
-          newGameElement.innerHTML = item;
-          list.appendChild(newGameElement);
-          results.push(item);
-          let newGameID = newArray[i].id;
-          newGameElement.style.backgroundImage = `url(${newArray[i].link + newArray[i].thumb})`;
-          newGameElement.addEventListener("click", () => {
-            const params = new URLSearchParams({ target: newGameID });
-            window.location.href = `game.html?${params.toString()}`;
-          });
-        }
-      }
-      if (results.length < 1) {
-        nothing.style.display = "block";
-        nothing.style.paddingTop = "20px";
-        if (nothing.children[0]) nothing.children[0].style.display = "inline";
-      } else {
-        nothing.style.paddingTop = "0px";
-        nothing.style.display = "none";
-        list.style.display = "flex";
-      }
-    });
   }
   //Above is code for sidebar search
   let theme = localStorage.getItem("theme");
