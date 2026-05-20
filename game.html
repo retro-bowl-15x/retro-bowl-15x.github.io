@@ -232,25 +232,27 @@
     </script>
     
 <script>
-document.addEventListener("DOMContentLoaded", function(){
-
+document.addEventListener("DOMContentLoaded", function () {
   const playBtn = document.getElementById("play-game-btn");
   const startScreen = document.getElementById("game-start-screen");
   const gameFrame = document.getElementById("game-frame");
 
-  if(playBtn){
-    playBtn.addEventListener("click", function(){
+  if (playBtn && startScreen && gameFrame) {
+    playBtn.addEventListener("click", function (e) {
+      e.preventDefault();
 
-      if(gameFrame.dataset.src){
-        gameFrame.src = gameFrame.dataset.src;
+      startScreen.style.display = "none";
+
+      if (gameFrame.dataset.src && !gameFrame.getAttribute("src")) {
+        gameFrame.setAttribute("src", gameFrame.dataset.src);
       }
 
       gameFrame.style.display = "block";
-      startScreen.style.display = "none";
-
+      gameFrame.style.width = "100%";
+      gameFrame.style.height = "40vw";
+      gameFrame.style.minHeight = "40vw";
     });
   }
-
 });
 </script>
 

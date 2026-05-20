@@ -685,3 +685,32 @@ hr {
 #play-game-btn:hover{
   transform:scale(1.05) !important;
 }
+
+
+/* No-shift fix: PLAY screen and iframe occupy the exact same player slot */
+.actual{
+  display:block !important;
+}
+
+#game-start-screen,
+#game-frame{
+  width:100% !important;
+  height:40vw !important;
+  min-height:40vw !important;
+  margin:0 !important;
+  padding-left:20px !important;
+  padding-right:20px !important;
+  box-sizing:border-box !important;
+  border-radius:10px 10px 0 0 !important;
+}
+
+#game-frame{
+  padding:0 !important;
+  display:none;
+  background:#000 !important;
+  border:0 !important;
+}
+
+.tool-bar{
+  margin-top:0 !important;
+}
