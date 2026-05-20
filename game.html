@@ -240,24 +240,27 @@ document.addEventListener("DOMContentLoaded", function () {
   const startScreen = document.getElementById("game-start-screen");
   const gameFrame = document.getElementById("game-frame");
 
-  if (playBtn && startScreen && gameFrame) {
-    playBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+  if (!playBtn || !startScreen || !gameFrame) return;
 
-      const targetSrc = gameFrame.dataset.src || gameFrame.getAttribute("data-src");
+  playBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
 
-      if (targetSrc) {
-        gameFrame.setAttribute("src", targetSrc);
-      }
+    const targetSrc = gameFrame.dataset.src || gameFrame.getAttribute("data-src");
 
-      gameFrame.style.display = "block";
-      gameFrame.style.visibility = "visible";
-      gameFrame.style.opacity = "1";
+    if (targetSrc) {
+      gameFrame.setAttribute("src", targetSrc);
+    }
 
+    gameFrame.style.display = "block";
+    gameFrame.style.visibility = "visible";
+    gameFrame.style.opacity = "1";
+
+    setTimeout(function () {
+      startScreen.classList.add("hidden");
       startScreen.style.display = "none";
-    });
-  }
+    }, 100);
+  });
 });
 </script>
 <script src="game.js"></script>

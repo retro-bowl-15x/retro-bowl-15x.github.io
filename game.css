@@ -808,3 +808,29 @@ hr {
   height:calc(100vh - 44px) !important;
   min-height:calc(100vh - 44px) !important;
 }
+
+
+/* Final PLAY visibility fix */
+#player-shell{
+  position:relative !important;
+  overflow:hidden !important;
+}
+
+#game-frame{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  z-index:5 !important;
+  background:#000 !important;
+  border:0 !important;
+}
+
+#game-start-screen{
+  z-index:10 !important;
+}
+
+#game-start-screen.hidden{
+  display:none !important;
+}
