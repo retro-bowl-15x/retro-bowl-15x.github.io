@@ -30,8 +30,10 @@
     </div>
 
   
+
 <script>
 window.aiptag = window.aiptag || {cmd: []};
+aiptag.cmd = aiptag.cmd || [];
 aiptag.cmd.display = aiptag.cmd.display || [];
 aiptag.cmd.player = aiptag.cmd.player || [];
 
@@ -43,49 +45,39 @@ aiptag.cmp = {
   buttonPosition: "bottom-left"
 };
 
-aiptag.cmd.player.push(function() {
+aiptag.cmd.player.push(function () {
   aiptag.adplayer = new aipPlayer({
     AD_WIDTH: 960,
     AD_HEIGHT: 540,
     AD_DISPLAY: "center",
     LOADING_TEXT: "loading advertisement",
-    PREROLL_ELEM: function(){ return document.getElementById("videoad"); },
-    AIP_COMPLETE: function (state) {
-      var v = document.getElementById("videoad");
-      if (v) {
-        v.innerHTML = "";
-        v.style.display = "none";
-        v.style.visibility = "hidden";
-        v.style.pointerEvents = "none";
-      }
+    PREROLL_ELEM: function () {
+      return document.getElementById("videoad");
+    },
+    AIP_COMPLETE: function () {
       if (typeof window.openGameAfterAd === "function") {
         window.openGameAfterAd();
       }
-    }
     }
   });
 });
 
 function show_videoad() {
-  var v = document.getElementById("videoad");
-  if (v) {
-    v.style.display = "block";
-    v.style.visibility = "visible";
-    v.style.pointerEvents = "auto";
-  }
-
-  if (typeof aiptag !== "undefined" && aiptag.adplayer && typeof aiptag.adplayer.startVideoAd === "function") {
-    aiptag.cmd.player.push(function() {
+  if (
+    window.aiptag &&
+    aiptag.adplayer &&
+    typeof aiptag.adplayer.startVideoAd === "function"
+  ) {
+    aiptag.cmd.player.push(function () {
       aiptag.adplayer.startVideoAd();
     });
-  } else {
-    if (typeof window.openGameAfterAd === "function") {
-      window.openGameAfterAd();
-    }
+  } else if (typeof window.openGameAfterAd === "function") {
+    window.openGameAfterAd();
   }
 }
 </script>
 <script async src="//api.adinplay.com/libs/aiptag/pub/MNS/agario.cafe/tag.min.js"></script>
+
 
 </head>
   <body>
