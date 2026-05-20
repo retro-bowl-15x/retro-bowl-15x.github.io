@@ -92,21 +92,27 @@
 	 
  
 				function show_preroll() {
-  if (typeof aiptag !== 'undefined' && aiptag.adplayer && typeof aiptag.adplayer.startPreRoll === 'function') {
+  if (typeof aiptag !== 'undefined' &&
+      aiptag.adplayer &&
+      typeof aiptag.adplayer.startPreRoll === 'function') {
+
     var p = document.getElementById('preroll');
     if (p) {
       p.style.display = 'block';
       p.style.visibility = 'visible';
       p.style.pointerEvents = 'auto';
     }
-    aiptag.cmd.player.push(function() { aiptag.adplayer.startPreRoll(); });
+
+    aiptag.cmd.player.push(function() {
+      aiptag.adplayer.startPreRoll();
+    });
+
   } else {
-    if (window.__pr_cb) {
-      var cb = window.__pr_cb;
-      window.__pr_cb = null;
-      cb();
-    }
+    openGameAfterPreroll();
   }
+}
+    aiptag.cmd.player.push(function() { aiptag.adplayer.startPreRoll(); });
+  } 
 } else {
 				    	
    //skip_play();
