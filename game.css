@@ -616,3 +616,52 @@ hr {
 #play-game-btn:hover{
   transform:scale(1.05);
 }
+
+
+/* FIX: make 970x250 ad fully visible on game start screen */
+#game-start-screen{
+  overflow:visible !important;
+  height:auto !important;
+  min-height:40vw !important;
+}
+
+.game-ad-970-wrap{
+  width:970px !important;
+  height:250px !important;
+  max-width:970px !important;
+  min-width:970px !important;
+  margin:0 auto 20px auto !important;
+  display:block !important;
+  position:relative !important;
+  overflow:visible !important;
+  text-align:center !important;
+  flex:0 0 250px !important;
+}
+
+.game-ad-970-wrap #agario-cafe_970x250{
+  width:970px !important;
+  height:250px !important;
+  min-width:970px !important;
+  min-height:250px !important;
+  max-width:970px !important;
+  max-height:250px !important;
+  display:block !important;
+  position:relative !important;
+  overflow:visible !important;
+  margin:0 auto !important;
+  padding:0 !important;
+  transform:none !important;
+}
+
+.game-ad-970-wrap #agario-cafe_970x250 iframe,
+.game-ad-970-wrap #agario-cafe_970x250 div,
+.game-ad-970-wrap #agario-cafe_970x250 ins{
+  max-width:none !important;
+}
+
+/* Keep PLAY below the ad */
+#play-game-btn{
+  display:block !important;
+  margin:0 auto !important;
+  flex:0 0 auto !important;
+}
