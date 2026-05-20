@@ -20,8 +20,6 @@
     <title></title>
 	<link class="favicon" rel="icon" type="image/x-icon" href="/media/drive.ico" />
     <link rel="stylesheet" href="game.css?vsfa1" />
-	<div id="videoad"></div>
-  
 <script>
 	window.aiptag = window.aiptag || {cmd: []};
 	aiptag.cmd.display = aiptag.cmd.display || [];
@@ -43,8 +41,8 @@
 			LOADING_TEXT: 'loading advertisement',
 			PREROLL_ELEM: function(){return document.getElementById('videoad')},
 			AIP_COMPLETE: function (state)  {
-                if (typeof window.__openGameAfterAd === "function") {
-                    window.__openGameAfterAd();
+                if (typeof window.__startLessonGame === "function") {
+                    window.__startLessonGame();
                 }
             }
 		});
@@ -52,13 +50,21 @@
 			});
 
 		function show_videoad() {
+        var videoAdBox = document.getElementById('videoad');
+        if (videoAdBox) {
+            videoAdBox.style.display = 'flex';
+            videoAdBox.style.visibility = 'visible';
+            videoAdBox.style.opacity = '1';
+            videoAdBox.style.pointerEvents = 'auto';
+        }
+
         if (window.aiptag && aiptag.adplayer && typeof aiptag.adplayer.startVideoAd === 'function') {
             aiptag.cmd.player.push(function() {
                 aiptag.adplayer.startVideoAd();
             });
         } else {
-            if (typeof window.__openGameAfterAd === "function") {
-                window.__openGameAfterAd();
+            if (typeof window.__startLessonGame === "function") {
+                window.__startLessonGame();
             }
         }
     }
@@ -74,6 +80,7 @@
 
   </head>
   <body>
+    <div id="videoad"></div>
       <nav class="nav" id="nav">
 
       <a href="/" class="logo2" style="background-color: transparent">
@@ -92,12 +99,12 @@
     <div class="game-container">
       <div class="game-related">
         <div class="actual" id="gameframe">
-          <div id="game-start-screen">
-            <img id="game-start-image" src="" alt="Game Preview" />
-            <div id="start-970-ad">
-              <!-- 970x250 REKLAM KODUNU BURAYA EKLE -->
+          <div id="lesson-start-panel">
+            <img id="lesson-start-image" src="" alt="Game Preview" />
+            <div id="lesson-970-ad">
+              <!-- 970x250 REKLAM KODUNU BURAYA YAPIŞTIR -->
             </div>
-            <button type="button" id="start-play-button">PLAY</button>
+            <button type="button" id="lesson-play-btn">PLAY</button>
           </div>
           <iframe src="" frameborder="0" id="game-frame" data-src="" style="display:none;"></iframe>
           <div class="tool-bar">
@@ -168,10 +175,10 @@
           }
           newArray.forEach((game) => {
             if (game.id === parseInt(targetUrl)) {
-              const gameFrameEl = document.getElementById("game-frame");
-              const gameStartImg = document.getElementById("game-start-image");
-              gameFrameEl.dataset.src = game.link;
-              if (gameStartImg) gameStartImg.src = game.link + game.thumb;
+              const frameEl = document.getElementById("game-frame");
+              const startImageEl = document.getElementById("lesson-start-image");
+              frameEl.dataset.src = game.link;
+              if (startImageEl) startImageEl.src = game.link + game.thumb;
               const titleFromStorage = localStorage.getItem("title");
               if (titleFromStorage && titleFromStorage.trim() !== "") {
                 const pageTitle = document.getElementsByTagName("title")[0];
@@ -229,44 +236,55 @@
     </script>
 
     <script>
-      window.__openGameAfterAd = function () {
+      window.__startLessonGame = function () {
         var frame = document.getElementById("game-frame");
-        var startScreen = document.getElementById("game-start-screen");
-        var videoad = document.getElementById("videoad");
+        var panel = document.getElementById("lesson-start-panel");
+        var videoAdBox = document.getElementById("videoad");
 
-        if (videoad) {
-          videoad.innerHTML = "";
-          videoad.style.display = "none";
+        if (videoAdBox) {
+          videoAdBox.innerHTML = "";
+          videoAdBox.style.display = "none";
+          videoAdBox.style.visibility = "hidden";
+          videoAdBox.style.pointerEvents = "none";
         }
 
         if (frame) {
-          if (!frame.src || frame.src === window.location.href || frame.src === "about:blank") {
-            frame.src = frame.dataset.src || frame.getAttribute("data-src") || "";
+          var targetSrc = frame.dataset.src || frame.getAttribute("data-src") || "";
+          if (targetSrc && !frame.src) {
+            frame.src = targetSrc;
           }
           frame.style.display = "block";
         }
 
-        if (startScreen) {
-          startScreen.style.display = "none";
+        if (panel) {
+          panel.style.display = "none";
         }
       };
 
       document.addEventListener("DOMContentLoaded", function () {
-        var playBtn = document.getElementById("start-play-button");
+        var playBtn = document.getElementById("lesson-play-btn");
         if (!playBtn) return;
 
-        playBtn.addEventListener("click", function (e) {
-          e.preventDefault();
-          e.stopPropagation();
+        playBtn.addEventListener("click", function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+
+          var videoAdBox = document.getElementById("videoad");
+          if (videoAdBox) {
+            videoAdBox.style.display = "flex";
+            videoAdBox.style.visibility = "visible";
+            videoAdBox.style.opacity = "1";
+            videoAdBox.style.pointerEvents = "auto";
+          }
 
           try {
             if (typeof show_videoad === "function") {
               show_videoad();
             } else {
-              window.__openGameAfterAd();
+              window.__startLessonGame();
             }
-          } catch (err) {
-            window.__openGameAfterAd();
+          } catch (e) {
+            window.__startLessonGame();
           }
         });
       });

@@ -41,8 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
   gameFrame.addEventListener("mouseenter", () => (isGameActive = true));
   gameFrame.addEventListener("mouseleave", () => (isGameActive = false));
   setInterval(() => {
-    if (isGameActive && document.activeElement !== gameIFrame) {
-      gameIFrame.focus();
+    const realFrame = document.getElementById("game-frame");
+    if (realFrame && realFrame.style.display !== "none" && realFrame.contentWindow && isGameActive && document.activeElement !== realFrame.contentWindow) {
+      realFrame.contentWindow.focus();
     }
   }, 1000);
   //Above is code for full screen and focusing on the frame
