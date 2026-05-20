@@ -667,3 +667,46 @@ hr {
 #videoad > *{
   pointer-events:auto;
 }
+
+
+/* Preroll layer: inactive until PLAY starts the ad */
+#preroll{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483647 !important;
+  display:none;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+#preroll[style*="display: block"],
+#preroll[style*="display:block"]{
+  pointer-events:auto !important;
+}
+
+/* Make sure the play/start area stays inside the player slot */
+#player-shell{
+  position:relative !important;
+  width:100% !important;
+  height:40vw !important;
+  min-height:40vw !important;
+  background:#000 !important;
+  overflow:hidden !important;
+}
+
+#player-shell #game-frame{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  border:0 !important;
+  background:#000 !important;
+  z-index:1 !important;
+}
+
+#player-shell #game-start-screen{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:2 !important;
+}
